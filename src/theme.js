@@ -6,11 +6,11 @@ export const tokens = (mode) => ({
   ...(mode === "dark"
     ? {
         chartPalette: {
+          100: "#f27059",
           500: "#6a4c93",
           200: "#00bbf9",
           300: "#8ac926",
           400: "#ff595e",
-          100: "#f29e4c",
           600: "#43bccd",
           700: "#ee4266",
           800: "#0ead69",

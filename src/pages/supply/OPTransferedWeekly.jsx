@@ -2,7 +2,7 @@ import BarChart from "../../components/BarChart";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
-const IBC = ({ data }) => {
+const OPTransferedWeekly = ({ data, chartWidth }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -29,10 +29,13 @@ const IBC = ({ data }) => {
           color: colors.grey[600],
         },
         title: {
-          display: true,
+          display: false,
           color: colors.secondary[400],
           text: "Volume (LUNA)",
         },
+      },
+      countAxis: {
+        position: "right",
       },
       x: {
         stacked: true,
@@ -57,4 +60,4 @@ const IBC = ({ data }) => {
   return <BarChart chartData={data} options={options} />;
 };
 
-export default IBC;
+export default OPTransferedWeekly;

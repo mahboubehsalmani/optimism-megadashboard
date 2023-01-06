@@ -208,31 +208,13 @@ const queryMostUsedContracts =
   "https://app.flipsidecrypto.com/velocity/queries/ad028ebe-d661-4302-92d5-07d74584711b";
 // Supply
 
-const getRichList =
-  "https://api.flipsidecrypto.com/api/v2/queries/a77d59bb-9ee8-4d50-8faf-1fc8f41e67bf/data/latest";
-const queryRichList = "";
+const getSupplyQuickData =
+  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=optimism";
 
-const getWeeklyStaking =
-  "https://api.flipsidecrypto.com/api/v2/queries/356646fe-d848-4b72-9d17-3b0879256264/data/latest";
-
-const getWeeklyStakingRewardsDistributed =
-  "https://api.flipsidecrypto.com/api/v2/queries/5afa43b7-f4e6-49cd-9896-22bef3b2f8af/data/latest";
-
-const getTotalAndCirculatingSupply =
-  "https://api.coingecko.com/api/v3/coins/terra-luna-2";
-
-const queryTotalAndCirculatingSupply =
-  "https://api.coingecko.com/api/v3/coins/terra-luna-2";
-
-const getTotalNumberOfStakedLUNA = "https://phoenix-lcd.terra.dev/staking/pool";
-const queryTotalNumberOfStakedLUNA =
-  "https://phoenix-lcd.terra.dev/staking/pool";
-
-const getIBC =
-  "https://api.flipsidecrypto.com/api/v2/queries/a8175d3b-cc61-4cf5-893d-3eb1e0bc36bd/data/latest";
-
-const getIBCPercent =
-  "https://api.flipsidecrypto.com/api/v2/queries/126c2e9f-5322-476e-8b2f-4d1068e83ba3/data/latest";
+const getOPTransferedWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/2178925b-b197-4cd9-9656-259fc6d2df77/data/latest";
+const queryOPtransferedWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/2178925b-b197-4cd9-9656-259fc6d2df77";
 
 // staking
 
@@ -264,16 +246,6 @@ export default {
   queryAllTimeQuickTransactions,
   getThisWeekQuickTransactions,
   queryThisWeekQuickTransactions,
-  getRichList,
-  queryRichList,
-  getWeeklyStaking,
-  getWeeklyStakingRewardsDistributed,
-  getTotalAndCirculatingSupply,
-  getTotalNumberOfStakedLUNA,
-  queryTotalAndCirculatingSupply,
-  queryTotalNumberOfStakedLUNA,
-  getIBC,
-  getIBCPercent,
   queryTotalContractsDeployedEachWeek,
   getTotalContractsDeployedEachWeek,
   getHourlyPrice,
@@ -342,4 +314,7 @@ export default {
   queryWalletAvgQuickData,
   getDistributionOfWallets,
   queryDistributionOfWallets,
+  getSupplyQuickData,
+  getOPTransferedWeekly,
+  queryOPtransferedWeekly,
 };

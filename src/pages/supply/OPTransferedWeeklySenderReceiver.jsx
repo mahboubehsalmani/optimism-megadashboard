@@ -1,8 +1,8 @@
+import BarChart from "../../components/BarChart";
 import { useTheme } from "@mui/material";
-import PieChart from "../../components/PieChart";
 import { tokens } from "../../theme";
 
-const IBCPercent = ({ data, id }) => {
+const OPTransferedWeeklySenderReceiver = ({ data, chartWidth }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -12,7 +12,6 @@ const IBCPercent = ({ data, id }) => {
     plugins: {
       legend: {
         position: "top",
-        display: false,
       },
       title: {
         display: true,
@@ -20,6 +19,7 @@ const IBCPercent = ({ data, id }) => {
     },
     scales: {
       y: {
+        stacked: true,
         tick: {
           color: colors.redAccent[800],
           display: true,
@@ -29,12 +29,13 @@ const IBCPercent = ({ data, id }) => {
           color: colors.grey[600],
         },
         title: {
-          display: true,
+          display: false,
           color: colors.secondary[400],
           text: "Volume (LUNA)",
         },
       },
       x: {
+        stacked: true,
         grid: {
           display: false,
           color: colors.grey[100],
@@ -53,7 +54,7 @@ const IBCPercent = ({ data, id }) => {
     },
   };
 
-  return <PieChart data={data} id={id} />;
+  return <BarChart chartData={data} options={options} />;
 };
 
-export default IBCPercent;
+export default OPTransferedWeeklySenderReceiver;
