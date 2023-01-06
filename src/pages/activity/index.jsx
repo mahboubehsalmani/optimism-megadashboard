@@ -19,6 +19,8 @@ import FunctionDistribution from "./functionDistribution";
 import MoastUsedFunctionWeekly from "./mostUsedFunctionWeekly";
 import MostUsedProtocolAction from "./mostUsedProtocolActions";
 import MostUsedProtocolActionsWeekly from "./mostUsedProtocolActionsWeekly";
+import MostUsedProjects from "./mostUsedProjects";
+import MostUsedProjectsWeekly from "./mostUsedProjectsWeekly";
 
 const Activity = () => {
   const theme = useTheme();
@@ -201,9 +203,24 @@ const Activity = () => {
   ] = useState(null);
   const [dataMostUsedProtocolActions, setDataMostUsedProtocolActions] =
     useState(null);
+
+  //Most Used Projects
+
+  const [statusMostUsedProjects, setStatusMostUsedProjects] =
+    useState("loading");
+  const [statusMostUsedProjectsWeekly, setStatusMostUsedProjectsWeekly] =
+    useState("loading");
+  const [dataMostUsedProjectsWeekly, setDataMostUsedProjectsWeekly] = useState(
+    []
+  );
+  const [dataMostUsedProjects, setDataMostUsedProjects] = useState([]);
+
+  // Blocks
+
+  const [statusBlockQuickData, setStatusBlockQuickData] = useState("loading");
+  const [dataBlockQuickData, setDataBlockQuickData] = useState(null);
   //
   const [quickData, setQuickData] = useState({});
-  const sourceQuickData = apis.queryAllTimeQuickTransactions;
   const [loadingStatus, setLoadingStatus] = useState("loading");
   const [
     statusTotalTransactionFeesPerWeek,
@@ -242,6 +259,9 @@ const Activity = () => {
     getMostUsedFunctionWeekly();
     getMostUsedProtocolActions();
     getMostUsedProtocolActionsWeekly();
+    getMostUsedProjects();
+    getMostUsedProjectsWeekly();
+    getBlocksQuickData();
   }, []);
 
   // Transaction Fee
@@ -712,7 +732,7 @@ const Activity = () => {
     }
   };
 
-  // Mose Used Actions
+  // Most Used Actions
   const getMostUsedProtocolActions = async () => {
     setStatusMostUsedProtocolActions("loading");
     try {
@@ -829,6 +849,148 @@ const Activity = () => {
     }
   };
 
+  // Most Used Projects
+  const getMostUsedProjects = async () => {
+    setStatusMostUsedProjects("loading");
+    try {
+      const res = await http.get(apis.getMostUsedProjects);
+      let temp = [];
+      res.map((data, index) => {
+        temp = [
+          ...temp,
+          {
+            id: data.PROJECT_NAME,
+            label: data.PROJECT_NAME,
+            value: data.COUNT,
+            color: colors.chartPalette[(index + 1) * 100],
+          },
+        ];
+      });
+      setDataMostUsedProjects(temp);
+      setStatusMostUsedProjects("loaded");
+    } catch (error) {
+      setStatusMostUsedProjects("error");
+    }
+  };
+
+  const getMostUsedProjectsWeekly = async () => {
+    let res = [];
+    setStatusMostUsedProjectsWeekly("loading");
+    try {
+      res = await http.get(apis.getMostUsedProjectsWeekly);
+      let _hop_protocol = [];
+      let _uniswap = [];
+      let _project_galaxy = [];
+      let _velodrome_finance = [];
+      let _synthetix = [];
+      let _pika_protocol = [];
+      let _optimism = [];
+      let _rubicon = [];
+      let _granary_finance = [];
+
+      await res.map((data) => {
+        if (data.PROJECT_NAME === "hop protocol")
+          _hop_protocol = [..._hop_protocol, data];
+        else if (data.PROJECT_NAME === "uniswap")
+          _uniswap = [..._uniswap, data];
+        else if (data.PROJECT_NAME === "project galaxy")
+          _project_galaxy = [..._project_galaxy, data];
+        else if (data.PROJECT_NAME === "velodrome finance")
+          _velodrome_finance = [..._velodrome_finance, data];
+        else if (data.PROJECT_NAME === "synthetix")
+          _synthetix = [..._synthetix, data];
+        else if (data.PROJECT_NAME === "pika protocol")
+          _pika_protocol = [..._pika_protocol, data];
+        else if (data.PROJECT_NAME === "optimism")
+          _optimism = [..._optimism, data];
+        else if (data.PROJECT_NAME === "rubicon")
+          _rubicon = [..._rubicon, data];
+        else if (data.PROJECT_NAME === "granary finance")
+          _granary_finance = [..._granary_finance, data];
+      });
+
+      setDataMostUsedProjectsWeekly({
+        labels: _hop_protocol.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "hop protocol",
+            data: _hop_protocol.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[100],
+            stack: "base",
+          },
+          {
+            label: "uniswap",
+            data: _uniswap.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[200],
+            stack: "base",
+          },
+          {
+            label: "project galaxy",
+            data: _project_galaxy.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[300],
+            stack: "base",
+          },
+          {
+            label: "velodrome finance",
+            data: _velodrome_finance.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[400],
+            stack: "base",
+          },
+          {
+            label: "synthetix",
+            data: _synthetix.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[500],
+            stack: "base",
+          },
+          {
+            label: "dex",
+            data: _pika_protocol.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[600],
+            stack: "base",
+          },
+          {
+            label: "optimism",
+            data: _optimism.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[700],
+            stack: "base",
+          },
+          {
+            label: "rubicon",
+            data: _rubicon.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[800],
+            stack: "base",
+          },
+          {
+            label: "granary finance",
+            data: _granary_finance.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[900],
+            stack: "base",
+          },
+        ],
+      });
+
+      setStatusMostUsedProjectsWeekly("loaded");
+    } catch (error) {
+      setStatusMostUsedProjectsWeekly("error");
+    }
+  };
+
+  // Blocks
+
+  const getBlocksQuickData = async () => {
+    setStatusBlockQuickData("loading");
+    try {
+      const blockTime = await http.get(apis.getBlocksAvgBlockTime);
+      const res = await http.get(apis.getBlocksQuickData);
+      setDataBlockQuickData({
+        ...res[0],
+        avgBlockTime: blockTime[0].AVERAGE_BLOCK_TIME,
+      });
+      setStatusBlockQuickData("loaded");
+    } catch (error) {
+      setStatusBlockQuickData("error");
+    }
+  };
   //
   const getQuickData = async () => {
     try {
@@ -1217,22 +1379,22 @@ const Activity = () => {
             }}
           >
             <MyChart
-              title="Most used function signatures"
-              Chart={FunctionDistribution}
-              url={apis.queryFunctionDistribution}
+              title="Most used projects"
+              Chart={MostUsedProjects}
+              url={apis.queryMostUsedProjects}
               status={statusFunctionDistribution}
-              getData={getFunctionDistribution}
-              data={dataFunctionDistribution}
-              id={"FunctionDistribution"}
+              getData={getMostUsedProjects}
+              data={dataMostUsedProjects}
+              id={"MostUsedProjects"}
             />
             <MyChart
-              title="Most used functions weekly"
-              Chart={MoastUsedFunctionWeekly}
-              url={apis.queryMostUsedContracts}
+              title="Most used projects weekly"
+              Chart={MostUsedProjectsWeekly}
+              url={apis.queryMostUsedProjectsWeekly}
               status={statusMostUsedFunctionWeekly}
-              getData={getMostUsedFunctionWeekly}
-              data={dataMostUsedFunctionWeekly}
-              id={"MoastUsedFunctionWeekly"}
+              getData={getMostUsedProjectsWeekly}
+              data={dataMostUsedProjectsWeekly}
+              id={"MostUsedProjectsWeekly"}
             />
           </Grid>
         </Grid>
@@ -1255,80 +1417,78 @@ const Activity = () => {
         <Grid item xs={12} lg={3.8}>
           <InfoCard
             title="# of blocks"
-            source={sourceQuickData}
+            source={apis.getBlocksQuickData}
             info={
-              quickData.AVERAGE_FEE
-                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
+              dataBlockQuickData
+                ? dataBlockQuickData.BLOCKS_COUNT.toLocaleString("en-US")
                 : null
             }
-            status={loadingStatus}
-            getData={getQuickData}
+            status={statusBlockQuickData}
+            getData={getBlocksQuickData}
           />
         </Grid>
         <Grid item xs={12} lg={3.8}>
           <InfoCard
             title="Average # of transactions per block"
-            source={sourceQuickData}
+            source={apis.getBlocksQuickData}
             info={
-              quickData.TOTAL_FEE
-                ? quickData.TOTAL_FEE.toLocaleString("en-US")
+              dataBlockQuickData
+                ? dataBlockQuickData.AVERAGE_TX_COUNT.toLocaleString("en-US")
                 : null
             }
-            status={loadingStatus}
-            getData={getQuickData}
+            status={statusBlockQuickData}
+            getData={getBlocksQuickData}
           />
         </Grid>
 
         <Grid item xs={12} lg={3.8}>
           <InfoCard
             title="Average block time"
-            source={sourceQuickData}
+            source={apis.getBlocksQuickData}
             info={
-              quickData.AVERAGE_FEE
-                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
+              dataBlockQuickData
+                ? dataBlockQuickData.avgBlockTime.toLocaleString("en-US")
                 : null
             }
-            status={loadingStatus}
-            getData={getQuickData}
+            status={statusBlockQuickData}
+            getData={getBlocksQuickData}
           />
         </Grid>
         <Grid item xs={12} lg={3.8}>
           <InfoCard
             title="Last created block"
-            source={sourceQuickData}
+            source={apis.getBlocksQuickData}
             info={
-              quickData.AVERAGE_FEE
-                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
-                : null
+              dataBlockQuickData ? dataBlockQuickData.LAST_BLOCK_NUMBER : null
             }
-            status={loadingStatus}
-            getData={getQuickData}
+            status={statusBlockQuickData}
+            getData={getBlocksQuickData}
           />
         </Grid>
         <Grid item xs={12} lg={3.8}>
           <InfoCard
             title="Average block difficulty"
-            source={sourceQuickData}
+            source={apis.getBlocksQuickData}
             info={
-              quickData.AVERAGE_FEE
-                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
+              dataBlockQuickData
+                ? dataBlockQuickData.AVERAGE_DIFFICULTY.toLocaleString("en-US")
                 : null
             }
-            status={loadingStatus}
-            getData={getQuickData}
+            status={statusBlockQuickData}
+            getData={getBlocksQuickData}
           />
         </Grid>
         <Grid item xs={12} lg={3.8}>
           <InfoCard
             title="Average block size"
-            source={sourceQuickData}
+            source={apis.getBlocksQuickData}
             info={
-              quickData.AVERAGE_FEE
-                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
+              dataBlockQuickData
+                ? dataBlockQuickData.AVERAGE_SIZE.toLocaleString("en-US")
                 : null
             }
-            status={loadingStatus}
-            getData={getQuickData}
+            status={statusBlockQuickData}
+            getData={getBlocksQuickData}
           />
         </Grid>
         <Grid item xs={12}>
