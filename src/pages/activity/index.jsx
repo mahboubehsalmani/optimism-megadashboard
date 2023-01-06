@@ -11,6 +11,10 @@ import http from "../../services/http";
 import TxFeeWeeklyDetailed from "./txFeeWeeklyDetailed";
 import GasUsedWeekly from "./gasUsedWeekly";
 import GasUsedWeeklyDetailed from "./gasUsedWeeklyDetailed";
+import TxWeekly from "./txWeekly";
+import TPSWeekly from "./TPSWeekly";
+import L1GasUsed from "./L1GasUsed";
+import TxSendersReceivers from "./txSendersReceivers";
 
 const Activity = () => {
   const theme = useTheme();
@@ -73,6 +77,103 @@ const Activity = () => {
     ],
   });
 
+  // Transaction Count
+  const [
+    statusNumberOfTxSendersQuickdata,
+    setStatusNumberOfTxSendersQuickdata,
+  ] = useState("loading");
+  const [statusAverageTPSQuickData, setStatusAverageTPSQuickData] =
+    useState("loading");
+  const [statusNumberOfTxQuickData, setStatusNumberOfTxQuickData] =
+    useState("loading");
+  const [statusTxWeekly, setStatusTxWeekly] = useState("loading");
+  const [statusTPSWeekly, setStatusTPSWeekly] = useState("loading");
+  const [statusSenderReceiver, setStatusSenderReceiver] = useState("loading");
+  const [statusL1GasUsed, setStatusL1GasUsed] = useState("loading");
+  const [dataL1GasUsed, setDataL1GasUsed] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Total",
+        data: [],
+        backgroundColor: colors.chartPalette[100],
+        borderColor: colors.chartPalette[100],
+        borderWidth: 1,
+      },
+      {
+        label: "Average",
+        data: [],
+        backgroundColor: colors.chartPalette[200],
+        borderColor: colors.chartPalette[200],
+        borderWidth: 1,
+      },
+    ],
+  });
+  const [dataSenderReceiver, setDataSenderReceiver] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Sender",
+        data: [],
+        backgroundColor: colors.chartPalette[100],
+        borderColor: colors.chartPalette[100],
+        borderWidth: 1,
+      },
+      {
+        label: "Receiver",
+        data: [],
+        backgroundColor: colors.chartPalette[200],
+        borderColor: colors.chartPalette[200],
+        borderWidth: 1,
+      },
+    ],
+  });
+  const [dataTPSWeekly, setDataTPSWeekly] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "TPS",
+        data: [],
+        backgroundColor: colors.chartPalette[100],
+        borderColor: colors.chartPalette[100],
+        borderWidth: 1,
+      },
+    ],
+  });
+  const [dataTxWeekly, setDataTxWeekly] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Transactions",
+        data: [],
+        backgroundColor: colors.chartPalette[100],
+        borderColor: colors.chartPalette[100],
+        borderWidth: 1,
+        type: "line",
+      },
+      {
+        label: "Successful",
+        data: [],
+        backgroundColor: "#0A9396",
+        borderColor: "#0A9396",
+        borderWidth: 1,
+        type: "bar",
+      },
+      {
+        label: "Failed",
+        data: [],
+        backgroundColor: "#9B2226",
+        borderColor: "#9B2226",
+        borderWidth: 1,
+        type: "bar",
+      },
+    ],
+  });
+  const [dataNumberOfTxQuickData, setDataNumberOfTxQuickData] = useState(null);
+  const [dataNumberOfTxSendersQuickdata, setDataNumberOfTxSendersQuickdata] =
+    useState(null);
+  const [dataAverageTPSQuickData, setDataAverageTPSQuickData] = useState(null);
+
   //
   const [quickData, setQuickData] = useState({});
   const sourceQuickData = apis.queryAllTimeQuickTransactions;
@@ -101,8 +202,18 @@ const Activity = () => {
     getTxGasUsedQuickData();
     getTxFeeWeekly();
     getTxGasUsedWeekly();
+    getNumberOfTxSendersQuickData();
+    getAverageTPSQuickData();
+    getNumberOfTransactionsQuickData();
+    getAverageTPSQuickData();
+    getNumberOfTxSendersQuickData();
+    getTxWeekly();
+    getTPSWeekly();
+    getSenderReceiver();
+    getL1GasUsed();
   }, []);
 
+  // Transaction Fee
   const getTxFeeWeekly = async () => {
     setStatusTxFeeWeekly("loading");
     try {
@@ -236,6 +347,168 @@ const Activity = () => {
       setStatusTXGasUsedQuickData("error");
     }
   };
+
+  // Transaction Count
+  const getNumberOfTransactionsQuickData = async () => {
+    setStatusNumberOfTxQuickData("loading");
+    try {
+      const res = await http.get(apis.getNumberOfTransactionsQuickData);
+      setDataNumberOfTxQuickData(res[0].TX_COUNT);
+      setStatusNumberOfTxQuickData("loaded");
+    } catch (error) {
+      setStatusNumberOfTxQuickData("error");
+    }
+  };
+  const getAverageTPSQuickData = async () => {
+    setStatusAverageTPSQuickData("loading");
+    try {
+      const res = await http.get(apis.getAverageTPSQuickData);
+      setDataAverageTPSQuickData(res[0].AVERAGE_TPS);
+      setStatusAverageTPSQuickData("loaded");
+    } catch (error) {
+      setStatusAverageTPSQuickData("error");
+    }
+  };
+  const getNumberOfTxSendersQuickData = async () => {
+    setStatusNumberOfTxSendersQuickdata("loading");
+    try {
+      const res = await http.get(apis.getNumberOfTxSendersQuickData);
+      setDataNumberOfTxSendersQuickdata(res[0].SENDERS);
+      setStatusNumberOfTxSendersQuickdata("loaded");
+    } catch (error) {
+      setStatusNumberOfTxSendersQuickdata("error");
+    }
+  };
+
+  const getTxWeekly = async () => {
+    setStatusTxWeekly("loading");
+
+    try {
+      const res = await http.get(apis.getTxWeekly);
+      setDataTxWeekly({
+        labels: res.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "Transactions",
+            data: res.map((data) => data.TX_COUNT),
+            backgroundColor: colors.chartPalette[100],
+            borderColor: colors.chartPalette[100],
+            borderWidth: 1,
+            type: "line",
+          },
+          {
+            label: "Failed",
+            data: res.map((data) => data.FAILED_TRANSACTIONS),
+            backgroundColor: "#9B2226",
+            borderColor: "#9B2226",
+            borderWidth: 1,
+            type: "bar",
+          },
+          {
+            label: "Successful",
+            data: res.map((data) => data.SUCCESSFUL_TRANSACTIONS),
+            backgroundColor: "#0A9396",
+            borderColor: "#0A9396",
+            borderWidth: 1,
+            type: "bar",
+          },
+        ],
+      });
+      setStatusTxWeekly("loaded");
+    } catch (error) {
+      setStatusTxWeekly("error");
+    }
+  };
+
+  const getTPSWeekly = async () => {
+    setStatusTPSWeekly("loading");
+
+    try {
+      const res = await http.get(apis.getTPSWeekly);
+      setDataTPSWeekly({
+        labels: res.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "TPS",
+            data: res.map((data) => data.AVERAGE_TPS),
+            backgroundColor: colors.chartPalette[100],
+            borderColor: colors.chartPalette[100],
+            borderWidth: 1,
+          },
+        ],
+      });
+      setStatusTPSWeekly("loaded");
+    } catch (error) {
+      setStatusTPSWeekly("error");
+    }
+  };
+
+  const getSenderReceiver = async () => {
+    setStatusSenderReceiver("loading");
+
+    try {
+      const res = await http.get(apis.getSenderReceiverWeekly);
+      setDataSenderReceiver({
+        labels: res.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "Sender",
+            data: res.map((data) => data.SENDERS),
+            backgroundColor: colors.chartPalette[100],
+            borderColor: colors.chartPalette[100],
+            borderWidth: 1,
+            type: "line",
+          },
+          {
+            label: "Receiver",
+            data: res.map((data) => data.RECEIVERS),
+            backgroundColor: colors.chartPalette[200],
+            borderColor: colors.chartPalette[200],
+            borderWidth: 1,
+            type: "line",
+          },
+        ],
+      });
+      setStatusSenderReceiver("loaded");
+    } catch (error) {
+      setStatusSenderReceiver("error");
+    }
+  };
+
+  const getL1GasUsed = async () => {
+    setStatusL1GasUsed("loading");
+
+    try {
+      const res = await http.get(apis.getL1GasUsedWeekly);
+      setDataL1GasUsed({
+        labels: res.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "Total",
+            data: res.map((data) => data.TOTAL),
+            backgroundColor: colors.chartPalette[100],
+            borderColor: colors.chartPalette[100],
+            borderWidth: 3,
+            type: "line",
+          },
+          {
+            label: "Average",
+            yAxisID: "avgAxis",
+            data: res.map((data) => data.AVERAGE),
+            backgroundColor: colors.chartPalette[200],
+            borderColor: colors.chartPalette[200],
+            borderWidth: 1,
+            type: "bar",
+          },
+        ],
+      });
+      setStatusL1GasUsed("loaded");
+    } catch (error) {
+      setStatusL1GasUsed("error");
+    }
+  };
+
+  //
 
   const getQuickData = async () => {
     try {
@@ -426,42 +699,42 @@ const Activity = () => {
         </Grid>
         <Grid item xs={12} lg={3.8}>
           <InfoCard
-            title="Average tx fee"
-            source={sourceQuickData}
+            title="# of Transactions"
+            source={apis.getNumberOfTransactionsQuickData}
             info={
-              quickData.AVERAGE_FEE
-                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
+              dataNumberOfTxQuickData
+                ? dataNumberOfTxQuickData.toLocaleString("en-US")
                 : null
             }
-            status={loadingStatus}
-            getData={getQuickData}
+            status={statusNumberOfTxQuickData}
+            getData={getNumberOfTransactionsQuickData}
           />
         </Grid>
         <Grid item xs={12} lg={3.8}>
           <InfoCard
-            title="Total tx fee"
-            source={sourceQuickData}
+            title="Average TPS"
+            source={apis.getAverageTPSQuickData}
             info={
-              quickData.TOTAL_FEE
-                ? quickData.TOTAL_FEE.toLocaleString("en-US")
+              dataAverageTPSQuickData
+                ? dataAverageTPSQuickData.toLocaleString("en-US")
                 : null
             }
-            status={loadingStatus}
-            getData={getQuickData}
+            status={statusAverageTPSQuickData}
+            getData={getAverageTPSQuickData}
           />
         </Grid>
 
         <Grid item xs={12} lg={3.8}>
           <InfoCard
-            title="Highest tx fee"
-            source={sourceQuickData}
+            title="# of Tx senders"
+            source={apis.getNumberOfTxSendersQuickData}
             info={
-              quickData.AVERAGE_FEE
-                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
+              dataNumberOfTxSendersQuickdata
+                ? dataNumberOfTxSendersQuickdata.toLocaleString("en-US")
                 : null
             }
-            status={loadingStatus}
-            getData={getQuickData}
+            status={statusNumberOfTxSendersQuickdata}
+            getData={getNumberOfTxSendersQuickData}
           />
         </Grid>
         <Grid item xs={12}>
@@ -473,41 +746,41 @@ const Activity = () => {
             }}
           >
             <MyChart
-              title="Tx fee"
-              Chart={TxFeeWeekly}
-              url={apis.queryTxFeeWeekly}
-              status={statusTxFeeWeekly}
-              getData={getTxFeeWeekly}
-              data={dataTxFeeWeekly}
+              title="Transactions"
+              Chart={TxWeekly}
+              url={apis.queryTxWeekly}
+              status={statusTxWeekly}
+              getData={getTxWeekly}
+              data={dataTxWeekly}
               id={"TxFeeWeekly"}
             />
             <MyChart
-              title="Gas used"
-              Chart={TotalTransactionFeesPerWeek}
-              url={apis.queryTotalTransactionFeesPerWeek}
-              status={statusTotalTransactionFeesPerWeek}
-              getData={getTotalTransactionFeesPerWeek}
-              data={dataTotalTransactionFeesPerWeek}
-              id={"TotalTransactionFeesPerWeek"}
+              title="TPS"
+              Chart={TPSWeekly}
+              url={apis.queryTPSWeekly}
+              status={statusTPSWeekly}
+              getData={getTPSWeekly}
+              data={dataTPSWeekly}
+              id={"TPSWeekly"}
             />
 
             <MyChart
-              title="Tx fee details"
-              Chart={TxFeeWeekly}
-              url={apis.queryTxFeeWeekly}
-              status={statusTxFeeWeekly}
-              getData={getTxFeeWeekly}
-              data={dataTxFeeWeekly}
-              id={"TxFeeWeekly"}
+              title="transaction senders/receivers"
+              Chart={TxSendersReceivers}
+              url={apis.querySenderReceiverWeekly}
+              status={statusSenderReceiver}
+              getData={getSenderReceiver}
+              data={dataSenderReceiver}
+              id={"SenderReceiverChart"}
             />
             <MyChart
-              title="Gas used details"
-              Chart={TotalTransactionFeesPerWeek}
-              url={apis.queryTotalTransactionFeesPerWeek}
-              status={statusTotalTransactionFeesPerWeek}
-              getData={getTotalTransactionFeesPerWeek}
-              data={dataTotalTransactionFeesPerWeek}
-              id={"TotalTransactionFeesPerWeek"}
+              title="L1 gas used"
+              Chart={L1GasUsed}
+              url={apis.queryL1GasUsedWeekly}
+              status={statusL1GasUsed}
+              getData={getL1GasUsed}
+              data={dataL1GasUsed}
+              id={"L1GasUsed"}
             />
           </Grid>
         </Grid>

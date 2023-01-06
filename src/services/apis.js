@@ -37,6 +37,14 @@ const getPastDayGasPrice =
 const getPastDayTxSuccessRate =
   "https://node-api.flipsidecrypto.com/api/v2/queries/c97e6239-0b71-4733-aadb-63d70d379671/data/latest";
 
+const getNumberOfTransactionsQuickData =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/4a8972b5-c9da-4aa6-9e9a-e0fd41eaa322/data/latest";
+const getAverageTPSQuickData =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/c28d7de0-6d09-4e79-9521-5e28810b09cf/data/latest";
+
+const getNumberOfTxSendersQuickData =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/e6fd62a1-58cf-4c8c-9f41-abe7713983c5/data/latest";
+
 // Transactions
 
 const getTxFeeQuickData =
@@ -91,6 +99,26 @@ const queryAverageTPSPerWeek =
 
 const queryAverageBlockTimePerWeek =
   "https://app.flipsidecrypto.com/velocity/queries/6ca0ca97-b1ce-42b5-9e5b-2bdb28e1f070";
+
+const getTxWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/16c34d1e-51e8-419b-a133-375a256083e4/data/latest";
+const queryTxWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/16c34d1e-51e8-419b-a133-375a256083e4";
+
+const getTPSWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/908d26e1-8ef8-487d-98c9-a2aca203eade/data/latest";
+const queryTPSWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/908d26e1-8ef8-487d-98c9-a2aca203eade";
+
+const getSenderReceiverWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/01d7f796-0d99-465e-befe-06a02c467ec8/data/latest";
+const querySenderReceiverWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/01d7f796-0d99-465e-befe-06a02c467ec8";
+
+const getL1GasUsedWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/073078bf-c542-4a6a-9832-af8feb0b8542/data/latest";
+const queryL1GasUsedWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/073078bf-c542-4a6a-9832-af8feb0b8542";
 
 // Wallets
 const getTotalNumberOfNewWalletsPerWeek =
@@ -238,4 +266,15 @@ export default {
   queryTxFeeWeekly,
   getTxGasUsedWeekly,
   queryTxGasUsedWeekly,
+  getNumberOfTransactionsQuickData,
+  getAverageTPSQuickData,
+  getNumberOfTxSendersQuickData,
+  getTxWeekly,
+  queryTxWeekly,
+  getTPSWeekly,
+  queryTPSWeekly,
+  getSenderReceiverWeekly,
+  querySenderReceiverWeekly,
+  getL1GasUsedWeekly,
+  queryL1GasUsedWeekly,
 };
