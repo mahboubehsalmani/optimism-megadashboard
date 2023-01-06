@@ -28,6 +28,9 @@ const NewContractsDeployedEachWeek = ({ data, id, chartWidth }) => {
           color: colors.grey[600],
         },
       },
+      activeAxis: {
+        position: "right",
+      },
       x: {
         grid: {
           display: false,

@@ -7,8 +7,6 @@ import NewContractsDeployedEachWeek from "./newContractsDeployedEachWeek";
 import { useEffect, useState } from "react";
 import http from "../../services/http";
 import NumberOfCommitsPerWeek from "./numberOfCommitsPerWeek";
-import TotalContractsDeployedEachWeek from "./totalContractsDeployedEachWeek";
-import ActiveContractsWeekly from "./activeContractsWeekly";
 import MostUsedContracts from "./mostUsedContracts";
 import CodeFrequency from "./CodeFrequency";
 
@@ -18,40 +16,8 @@ const Development = () => {
   const [dataMostUsedContracts, setDataMostUsedContracts] = useState([]);
   const [statusMostUsedContracts, setStatusMostUsedContracts] =
     useState("loadig");
-  const [statusActiveContractsWeekly, setStatusActiveContractsWeekly] =
-    useState("loading");
-  const [dataActiveContractsWeekly, setDataActiveContractsWeekly] = useState({
-    labels: [],
-    datasets: [
-      {
-        label: "Active Contract",
-        data: [],
-        backgroundColor: [colors.chartPalette[100]],
-        borderColor: colors.chartPalette[100],
-        borderWidth: 1,
-      },
-    ],
-  });
   const [loading, setLoading] = useState("loaded");
-  const [
-    statusTotalContractsDeployedEachWeek,
-    setStatusTotalContractsDeployedEachWeek,
-  ] = useState("loading");
-  const [
-    dataTotalContractsDeployedEachWeek,
-    setDataTotalContractsDeployedEachWeek,
-  ] = useState({
-    labels: [],
-    datasets: [
-      {
-        label: "Deployed contract",
-        data: [],
-        backgroundColor: [colors.chartPalette[100]],
-        borderColor: colors.chartPalette[100],
-        borderWidth: 1,
-      },
-    ],
-  });
+
   const [
     dataNewContractsDeployedEachWeek,
     setDataNewContractsDeployedEachWeek,
@@ -70,33 +36,8 @@ const Development = () => {
 
   useEffect(() => {
     getNewContractsDeployedEachWeek();
-    getTotalContractsDeployedEachWeek();
-    getActiveContractsWeekly();
     getMostUsedContracts();
   }, []);
-
-  const getActiveContractsWeekly = async () => {
-    let res = [];
-    setStatusActiveContractsWeekly("loading");
-    try {
-      res = await http.get(apis.getActiveContractsWeekly);
-      setDataActiveContractsWeekly({
-        labels: res.map((data) => data.WEEK),
-        datasets: [
-          {
-            label: "Active Contract",
-            data: res.map((data) => data.CONTRACTS),
-            backgroundColor: [colors.chartPalette[100]],
-            borderColor: colors.chartPalette[100],
-            borderWidth: 1,
-          },
-        ],
-      });
-      setStatusActiveContractsWeekly("loaded");
-    } catch (error) {
-      setStatusActiveContractsWeekly("error");
-    }
-  };
 
   const getNewContractsDeployedEachWeek = async () => {
     let res = [];
@@ -107,11 +48,21 @@ const Development = () => {
         labels: res.map((data) => data.WEEK),
         datasets: [
           {
-            label: "NEW CONTRACTS",
+            label: "New",
             data: res.map((data) => data.NEW_CONTRACTS),
-            backgroundColor: [colors.chartPalette[100]],
+            backgroundColor: colors.chartPalette[100],
             borderColor: colors.chartPalette[100],
             borderWidth: 1,
+            type: "line",
+          },
+          {
+            label: "Active",
+            yAxisID: "activeAxis",
+            data: res.map((data) => data.ACTIVE_CONTRACTS),
+            backgroundColor: colors.chartPalette[200],
+            borderColor: colors.chartPalette[200],
+            borderWidth: 1,
+            type: "line",
           },
         ],
       });
@@ -120,30 +71,6 @@ const Development = () => {
       setLoading("error");
     }
   };
-
-  const getTotalContractsDeployedEachWeek = async () => {
-    let res = [];
-    setStatusTotalContractsDeployedEachWeek("loading");
-    try {
-      res = await http.get(apis.getTotalContractsDeployedEachWeek);
-      setDataTotalContractsDeployedEachWeek({
-        labels: res.map((data) => data.WEEK),
-        datasets: [
-          {
-            label: "Deployed contract",
-            data: res.map((data) => data.TOTAL_CONTRACTS),
-            backgroundColor: [colors.chartPalette[100]],
-            borderColor: colors.chartPalette[100],
-            borderWidth: 1,
-          },
-        ],
-      });
-      setStatusTotalContractsDeployedEachWeek("loaded");
-    } catch (error) {
-      setStatusTotalContractsDeployedEachWeek("error");
-    }
-  };
-
   const getMostUsedContracts = async () => {
     let res = [];
     setStatusMostUsedContracts("loading");
@@ -155,9 +82,9 @@ const Development = () => {
         temp = [
           ...temp,
           {
-            id: data.CONTRACT,
-            label: data.CONTRACT,
-            value: data.TRANSACTIONS,
+            id: data.NAME,
+            label: data.NAME,
+            value: data.COUNT,
             color: colors.chartPalette[(index + 1) * 100],
           },
         ];
@@ -193,27 +120,6 @@ const Development = () => {
           getData={getNewContractsDeployedEachWeek}
           id={"NewContractsDeployedEachWeek"}
         />
-
-        <MyChart
-          title="# of total contracts weekly"
-          Chart={TotalContractsDeployedEachWeek}
-          url={apis.queryTotalContractsDeployedEachWeek}
-          status={statusTotalContractsDeployedEachWeek}
-          data={dataTotalContractsDeployedEachWeek}
-          getData={getTotalContractsDeployedEachWeek}
-          id={"TotalContractsDeployedEachWeek"}
-        />
-
-        <MyChart
-          title="# of active contracts weekly"
-          Chart={ActiveContractsWeekly}
-          url={apis.queryActiveContractsWeekly}
-          status={statusActiveContractsWeekly}
-          data={dataActiveContractsWeekly}
-          getData={getActiveContractsWeekly}
-          id={"ActiveContractsWeekly"}
-        />
-
         <MyChart
           title="Most used contracts"
           Chart={MostUsedContracts}
@@ -234,23 +140,21 @@ const Development = () => {
         <Grid item xs={12}>
           <Header
             title="Github development"
-            subtitle=" This section includes data about the development activity on the Terra Github repository."
+            subtitle=" This section includes data about the development activity on the Otimism Github repository."
           />
         </Grid>
 
         <MyChart
           title="# of commits Weekly"
           Chart={NumberOfCommitsPerWeek}
-          url={
-            "https://github.com/terra-money/core/graphs/commit-activity-data"
-          }
+          url={"https://github.com/ethereum-optimism"}
           id={"NumberOfCommitsPerWeek"}
         />
 
         <MyChart
           title="code frequency"
           Chart={CodeFrequency}
-          url={"https://github.com/terra-money/core/graphs/code-frequency"}
+          url={"https://github.com/ethereum-optimism"}
           id={"CodeFrequency"}
         />
       </Grid>

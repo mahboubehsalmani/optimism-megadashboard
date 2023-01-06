@@ -187,9 +187,9 @@ const getAverageTxPerWallet =
   "https://api.flipsidecrypto.com/api/v2/queries/fe850ab8-731a-4bd5-8e5a-aa4d1a8b3df5/data/latest";
 // Development
 const getNewContractsDeployedEachWeek =
-  "https://node-api.flipsidecrypto.com/api/v2/queries/b497e6f2-a790-4f72-8c48-c761d17afd44/data/latest";
+  "https://node-api.flipsidecrypto.com/api/v2/queries/2d3fd3bf-cd05-4198-b333-b2685511592e/data/latest";
 const queryNewContractsDeployedEachWeek =
-  "https://app.flipsidecrypto.com/velocity/queries/b497e6f2-a790-4f72-8c48-c761d17afd44";
+  "https://app.flipsidecrypto.com/velocity/queries/2d3fd3bf-cd05-4198-b333-b2685511592e";
 
 const getTotalContractsDeployedEachWeek =
   "https://api.flipsidecrypto.com/api/v2/queries/7a018c05-2a2b-4bb9-8b6c-377eecec2ed8/data/latest";
@@ -203,9 +203,9 @@ const queryActiveContractsWeekly =
   "https://app.flipsidecrypto.com/velocity/queries/c272cb70-4e32-4fd0-ad47-9c68c0ff54dd";
 
 const getMoatUsedContracts =
-  "https://api.flipsidecrypto.com/api/v2/queries/439fb5f0-cb8f-45ca-b477-6fe03b1ac7ad/data/latest";
+  "https://node-api.flipsidecrypto.com/api/v2/queries/ad028ebe-d661-4302-92d5-07d74584711b/data/latest";
 const queryMostUsedContracts =
-  "https://app.flipsidecrypto.com/velocity/queries/439fb5f0-cb8f-45ca-b477-6fe03b1ac7ad";
+  "https://app.flipsidecrypto.com/velocity/queries/ad028ebe-d661-4302-92d5-07d74584711b";
 // Supply
 
 const getRichList =
