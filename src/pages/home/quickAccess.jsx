@@ -20,7 +20,7 @@ const QuickAccess = () => {
   return (
     <Grid container gap={2}>
       <Grid
-        xs={3.8}
+        xs={2.8}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
@@ -42,7 +42,7 @@ const QuickAccess = () => {
       >
         <Typography
           sx={{
-            fontSize: "1.4rem",
+            fontSize: "1.2rem",
           }}
         >
           Activity
@@ -55,7 +55,7 @@ const QuickAccess = () => {
         />
       </Grid>
       <Grid
-        xs={3.8}
+        xs={2.8}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
@@ -77,7 +77,7 @@ const QuickAccess = () => {
       >
         <Typography
           sx={{
-            fontSize: "1.4rem",
+            fontSize: "1.2rem",
           }}
         >
           Wallets
@@ -90,7 +90,7 @@ const QuickAccess = () => {
         />
       </Grid>
       <Grid
-        xs={3.8}
+        xs={2.8}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
@@ -112,7 +112,7 @@ const QuickAccess = () => {
       >
         <Typography
           sx={{
-            fontSize: "1.4rem",
+            fontSize: "1.2rem",
           }}
         >
           Developments
@@ -125,7 +125,7 @@ const QuickAccess = () => {
         />
       </Grid>
       <Grid
-        xs={3.8}
+        xs={2.8}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
@@ -147,7 +147,7 @@ const QuickAccess = () => {
       >
         <Typography
           sx={{
-            fontSize: "1.4rem",
+            fontSize: "1.2rem",
           }}
         >
           Staking
@@ -161,7 +161,7 @@ const QuickAccess = () => {
       </Grid>
 
       <Grid
-        xs={3.8}
+        xs={2.8}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
@@ -183,7 +183,7 @@ const QuickAccess = () => {
       >
         <Typography
           sx={{
-            fontSize: "1.4rem",
+            fontSize: "1.2rem",
           }}
         >
           Supply
@@ -197,7 +197,43 @@ const QuickAccess = () => {
       </Grid>
 
       <Grid
-        xs={3.8}
+        xs={2.8}
+        item
+        sx={{
+          border: `1px solid ${colors.backgroundColor[400]}`,
+          borderRadius: "10px",
+          backgroundColor: colors.chartPalette[600],
+          boxShadow: `1px 2px ${colors.backgroundColor[900]}`,
+          justifyContent: "space-between",
+          display: "flex",
+          padding: "20px",
+          flexDirection: "row",
+          marginTop: "10px",
+          textDecoration: "none",
+          color: colors.grey[300],
+          paddingTop: "48px",
+          paddingBottom: "48px",
+        }}
+        component={Link}
+        to="/bridge"
+      >
+        <Typography
+          sx={{
+            fontSize: "1.2rem",
+          }}
+        >
+          Bridge
+        </Typography>
+        <GovernanceIcon
+          sx={{
+            marginRight: "8px",
+            fontSize: "2rem",
+          }}
+        />
+      </Grid>
+
+      <Grid
+        xs={2.8}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
@@ -219,10 +255,46 @@ const QuickAccess = () => {
       >
         <Typography
           sx={{
-            fontSize: "1.4rem",
+            fontSize: "1.2rem",
           }}
         >
           Governance
+        </Typography>
+        <GovernanceIcon
+          sx={{
+            marginRight: "8px",
+            fontSize: "2rem",
+          }}
+        />
+      </Grid>
+
+      <Grid
+        xs={2.8}
+        item
+        sx={{
+          border: `1px solid ${colors.backgroundColor[400]}`,
+          borderRadius: "10px",
+          backgroundColor: colors.chartPalette[600],
+          boxShadow: `1px 2px ${colors.backgroundColor[900]}`,
+          justifyContent: "space-between",
+          display: "flex",
+          padding: "20px",
+          flexDirection: "row",
+          marginTop: "10px",
+          textDecoration: "none",
+          color: colors.grey[300],
+          paddingTop: "48px",
+          paddingBottom: "48px",
+        }}
+        component={Link}
+        to="/nft"
+      >
+        <Typography
+          sx={{
+            fontSize: "1.2rem",
+          }}
+        >
+          NFT
         </Typography>
         <GovernanceIcon
           sx={{

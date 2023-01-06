@@ -9,6 +9,7 @@ body,
   width: 100%;
   font-family: "Open Sans", sans-serif;
   margin-top: 20px;
+  padding-left: 4px;
 }
 .app {
   display: flex;
