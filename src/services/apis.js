@@ -156,6 +156,11 @@ const getAverageBlockTime =
   "https://node-api.flipsidecrypto.com/api/v2/queries/83b21ebc-bd36-4ffc-ae50-c1c48982d635/data/latest";
 const queryAverageBlockTime =
   "https://app.flipsidecrypto.com/velocity/queries/83b21ebc-bd36-4ffc-ae50-c1c48982d635";
+
+const getBlockData =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/37b65fd9-d383-41fd-a411-afb7d7fa6bec/data/latest";
+const queryBlockData =
+  "https://app.flipsidecrypto.com/velocity/queries/37b65fd9-d383-41fd-a411-afb7d7fa6bec";
 // Wallets
 const getTotalNumberOfNewWalletsPerWeek =
   "https://api.flipsidecrypto.com/api/v2/queries/85d7bd06-f44a-487c-87d5-b0671438c9d7/data/latest";
@@ -329,4 +334,6 @@ export default {
   getBlocksQuickData,
   getAverageBlockTime,
   queryAverageBlockTime,
+  getBlockData,
+  queryBlockData,
 };

@@ -1,9 +1,8 @@
-import { Box, useTheme } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import LineChart from "../../components/LineChart";
 
-const AverageTPSPerWeek = ({ data, chartWidth, id }) => {
+const BlockCount = ({ data, chartWidth, id }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -20,6 +19,7 @@ const AverageTPSPerWeek = ({ data, chartWidth, id }) => {
     },
     scales: {
       y: {
+        stacked: true,
         tick: {
           color: colors.redAccent[800],
           display: true,
@@ -31,10 +31,11 @@ const AverageTPSPerWeek = ({ data, chartWidth, id }) => {
         title: {
           display: true,
           color: colors.secondary[400],
-          text: "Average",
+          text: "Volume (LUNA)",
         },
       },
       x: {
+        stacked: true,
         grid: {
           display: false,
           color: colors.grey[100],
@@ -63,4 +64,4 @@ const AverageTPSPerWeek = ({ data, chartWidth, id }) => {
   );
 };
 
-export default AverageTPSPerWeek;
+export default BlockCount;

@@ -21,6 +21,10 @@ import MostUsedProtocolAction from "./mostUsedProtocolActions";
 import MostUsedProtocolActionsWeekly from "./mostUsedProtocolActionsWeekly";
 import MostUsedProjects from "./mostUsedProjects";
 import MostUsedProjectsWeekly from "./mostUsedProjectsWeekly";
+import AverageBlockTime from "./averageBlockTime";
+import BlockCount from "./blockCount";
+import BlockSize from "./blockSize";
+import BlockDifficulty from "./blockDifficulty";
 
 const Activity = () => {
   const theme = useTheme();
@@ -218,28 +222,87 @@ const Activity = () => {
   // Blocks
 
   const [statusBlockQuickData, setStatusBlockQuickData] = useState("loading");
-  const [dataBlockQuickData, setDataBlockQuickData] = useState(null);
-  //
-  const [quickData, setQuickData] = useState({});
-  const [loadingStatus, setLoadingStatus] = useState("loading");
-  const [
-    statusTotalTransactionFeesPerWeek,
-    setStatusTotalTransactionFeesPerWeek,
-  ] = useState("loading");
+  const [statusAverageBlockTime, setStatusAverageBlockTime] =
+    useState("loading");
+  const [statusBlock, setStatusBlock] = useState("loading");
+  const [dataBlockDifficulty, setDataBlockDifficulty] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Max",
+        data: [],
+        backgroundColor: colors.chartPalette[100],
+        borderColor: colors.chartPalette[100],
+        borderWidth: 1,
+        type: "line",
+      },
+      {
+        label: "Average",
+        data: [],
+        backgroundColor: colors.chartPalette[100],
+        borderColor: colors.chartPalette[100],
+        borderWidth: 1,
+        type: "bar",
+      },
+    ],
+  });
+  const [dataBlockSize, setDataBlockSize] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Max",
+        data: [],
+        backgroundColor: colors.chartPalette[100],
+        borderColor: colors.chartPalette[100],
+        borderWidth: 1,
+        type: "line",
+      },
+      {
+        label: "Average",
+        data: [],
+        backgroundColor: colors.chartPalette[100],
+        borderColor: colors.chartPalette[100],
+        borderWidth: 1,
+        type: "bar",
+      },
+    ],
+  });
+  const [dataBlockCount, setDataBlockCount] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Max",
+        data: [],
+        backgroundColor: colors.chartPalette[100],
+        borderColor: colors.chartPalette[100],
+        borderWidth: 1,
+        type: "line",
+      },
+      {
+        label: "Average",
+        data: [],
+        backgroundColor: colors.chartPalette[100],
+        borderColor: colors.chartPalette[100],
+        borderWidth: 1,
+        type: "bar",
+      },
+    ],
+  });
 
-  const [dataTotalTransactionFeesPerWeek, setDataTotalTransactionFeesPerWeek] =
-    useState({
-      labels: [],
-      datasets: [
-        {
-          label: "Total Fee",
-          data: [],
-          backgroundColor: [colors.secondary[400]],
-          borderColor: colors.secondary[500],
-          borderWidth: 1,
-        },
-      ],
-    });
+  const [dataAverageBlockTime, setDataAverageBlockTime] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Average",
+        data: [],
+        backgroundColor: colors.chartPalette[100],
+        borderColor: colors.chartPalette[100],
+        borderWidth: 1,
+        type: "line",
+      },
+    ],
+  });
+  const [dataBlockQuickData, setDataBlockQuickData] = useState(null);
 
   useEffect(() => {
     getTxFeeQuickData();
@@ -262,6 +325,8 @@ const Activity = () => {
     getMostUsedProjects();
     getMostUsedProjectsWeekly();
     getBlocksQuickData();
+    getAverageBlockTime();
+    getBlocksData();
   }, []);
 
   // Transaction Fee
@@ -375,7 +440,7 @@ const Activity = () => {
       });
       setStatusTXGasUsedWeekly("loaded");
     } catch (error) {
-      setLoadingStatus("error");
+      setStatusTXGasUsedWeekly("error");
     }
   };
   const getTxFeeQuickData = async () => {
@@ -991,37 +1056,96 @@ const Activity = () => {
       setStatusBlockQuickData("error");
     }
   };
-  //
-  const getQuickData = async () => {
-    try {
-      const res = await http.get(apis.getAllTimeQuickTransactions);
-      setQuickData(res[0]);
-      setLoadingStatus("loaded");
-    } catch (error) {
-      setLoadingStatus("error");
-    }
-  };
 
-  const getTotalTransactionFeesPerWeek = async () => {
-    let res = [];
-    setStatusTotalTransactionFeesPerWeek("loading");
+  const getBlocksData = async () => {
+    setStatusBlock("loading");
+
     try {
-      res = await http.get(apis.getTotalTransactionFeesPerWeek);
-      setDataTotalTransactionFeesPerWeek({
+      const res = await http.get(apis.getBlockData);
+      setDataBlockDifficulty({
         labels: res.map((data) => data.WEEK),
         datasets: [
           {
-            label: "Total Fee",
-            data: res.map((data) => data.TOTAL),
-            backgroundColor: [colors.secondary[400]],
-            borderColor: colors.secondary[500],
+            label: "Max",
+            data: res.map((data) => data.MAX_DIFFICULTY),
+            backgroundColor: colors.chartPalette[100],
+            borderColor: colors.chartPalette[100],
             borderWidth: 1,
+            type: "line",
+          },
+          {
+            label: "Average",
+            data: res.map((data) => data.AVERAGE_DIFFICULTY),
+            backgroundColor: colors.chartPalette[200],
+            borderColor: colors.chartPalette[200],
+            borderWidth: 1,
+            type: "bar",
           },
         ],
       });
-      setStatusTotalTransactionFeesPerWeek("loaded");
+      setDataBlockSize({
+        labels: res.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "Max",
+            data: res.map((data) => data.MAX_SIZE),
+            backgroundColor: colors.chartPalette[100],
+            borderColor: colors.chartPalette[100],
+            borderWidth: 3,
+            type: "line",
+          },
+          {
+            label: "Average",
+            yAxisID: "avgAxis",
+            data: res.map((data) => data.AVERAGE_SIZE),
+            backgroundColor: colors.chartPalette[200],
+            borderColor: colors.chartPalette[200],
+            borderWidth: 1,
+            type: "bar",
+          },
+        ],
+      });
+
+      setDataBlockCount({
+        labels: res.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "Max",
+            data: res.map((data) => data.BLOCKS_COUNT),
+            backgroundColor: colors.chartPalette[100],
+            borderColor: colors.chartPalette[100],
+            borderWidth: 1,
+            type: "line",
+          },
+        ],
+      });
+      setStatusBlock("loaded");
     } catch (error) {
-      setStatusTotalTransactionFeesPerWeek("error");
+      setStatusBlock("error");
+    }
+  };
+
+  const getAverageBlockTime = async () => {
+    setStatusAverageBlockTime("loading");
+
+    try {
+      const res = await http.get(apis.getAverageBlockTime);
+      setDataAverageBlockTime({
+        labels: res.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "Average",
+            data: res.map((data) => data.AVERAGE_BLOCK_TIME),
+            backgroundColor: colors.chartPalette[100],
+            borderColor: colors.chartPalette[100],
+            borderWidth: 1,
+            type: "line",
+          },
+        ],
+      });
+      setStatusAverageBlockTime("loaded");
+    } catch (error) {
+      setStatusAverageBlockTime("error");
     }
   };
 
@@ -1501,40 +1625,40 @@ const Activity = () => {
           >
             <MyChart
               title="Block"
-              Chart={TxFeeWeekly}
-              url={apis.queryTxFeeWeekly}
-              status={statusTxFeeWeekly}
-              getData={getTxFeeWeekly}
-              data={dataTxFeeWeekly}
-              id={"TxFeeWeekly"}
+              Chart={BlockCount}
+              url={apis.queryBlockData}
+              status={statusBlock}
+              getData={getBlocksData}
+              data={dataBlockCount}
+              id={"BlockCount"}
             />
             <MyChart
               title="Block time"
-              Chart={TotalTransactionFeesPerWeek}
-              url={apis.queryTotalTransactionFeesPerWeek}
-              status={statusTotalTransactionFeesPerWeek}
-              getData={getTotalTransactionFeesPerWeek}
-              data={dataTotalTransactionFeesPerWeek}
-              id={"TotalTransactionFeesPerWeek"}
+              Chart={AverageBlockTime}
+              url={apis.queryAverageBlockTime}
+              status={statusAverageBlockTime}
+              getData={getAverageBlockTime}
+              data={dataAverageBlockTime}
+              id={"AverageBlockTime"}
             />
 
             <MyChart
               title="Block difficulty"
-              Chart={TxFeeWeekly}
-              url={apis.queryTxFeeWeekly}
-              status={statusTxFeeWeekly}
-              getData={getTxFeeWeekly}
-              data={dataTxFeeWeekly}
-              id={"TxFeeWeekly"}
+              Chart={BlockDifficulty}
+              url={apis.queryBlockData}
+              status={statusBlock}
+              getData={getBlocksData}
+              data={dataBlockDifficulty}
+              id={"BlockDifficulty"}
             />
             <MyChart
               title="Block size"
-              Chart={TotalTransactionFeesPerWeek}
-              url={apis.queryTotalTransactionFeesPerWeek}
-              status={statusTotalTransactionFeesPerWeek}
-              getData={getTotalTransactionFeesPerWeek}
-              data={dataTotalTransactionFeesPerWeek}
-              id={"TotalTransactionFeesPerWeek"}
+              Chart={BlockSize}
+              url={apis.queryBlockData}
+              status={statusBlock}
+              getData={getBlocksData}
+              data={dataBlockSize}
+              id={"BlockSize"}
             />
           </Grid>
         </Grid>
