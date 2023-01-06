@@ -1,12 +1,8 @@
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import LineChart from "../../components/LineChart";
+import BarChart from "../../components/BarChart";
 
-const AverageTransactionFeePerTransactionPerWeek = ({
-  data,
-  chartWidth,
-  id,
-}) => {
+const GasUsedWeeklyDetailed = ({ data, chartWidth, id }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -34,8 +30,10 @@ const AverageTransactionFeePerTransactionPerWeek = ({
         title: {
           display: true,
           color: colors.secondary[400],
-          text: "Average",
         },
+      },
+      medianAxis: {
+        position: "right",
       },
       x: {
         grid: {
@@ -57,7 +55,7 @@ const AverageTransactionFeePerTransactionPerWeek = ({
   };
 
   return (
-    <LineChart
+    <BarChart
       chartData={data}
       options={options}
       chartWidth={chartWidth}
@@ -66,4 +64,4 @@ const AverageTransactionFeePerTransactionPerWeek = ({
   );
 };
 
-export default AverageTransactionFeePerTransactionPerWeek;
+export default GasUsedWeeklyDetailed;

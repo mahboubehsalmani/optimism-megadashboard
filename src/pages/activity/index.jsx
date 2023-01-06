@@ -1,38 +1,85 @@
-import { Box, Grid, Typography, useTheme } from "@mui/material";
+import { Box, Grid, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import apis from "../../services/apis";
-import AverageTransactionFeePerTransactionPerWeek from "./averageTransactionFeePerTransactionPerWeek";
-import AverageBlockTimePerWeek from "./averageBlockTimePerWeek";
-import AverageTPSPerWeek from "./averageTPSPerWeek";
-import TotalNumberOfTransactionsPerWeek from "./totalNumberOfTransactionsPerWeek";
+import TxFeeWeekly from "./txFeeWeekly";
 import TotalTransactionFeesPerWeek from "./totalTransactionFeesPerWeek";
 import MyChart from "../../components/MyChart";
 import InfoCard from "../../components/InfoCard";
 import { useEffect, useState } from "react";
 import http from "../../services/http";
+import TxFeeWeeklyDetailed from "./txFeeWeeklyDetailed";
+import GasUsedWeekly from "./gasUsedWeekly";
+import GasUsedWeeklyDetailed from "./gasUsedWeeklyDetailed";
 
 const Activity = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  // Tx Fee data
+  const [statusTxFeeWeekly, setStatusTxFeeWeekly] = useState("loading");
+  const [statusTxGasUsedWeekly, setStatusTXGasUsedWeekly] = useState("loading");
+  const [statusTxFeeQuickData, setStatusTxFeeQuickData] = useState("loading");
+  const [statusTxGasUsedQuickData, setStatusTXGasUsedQuickData] =
+    useState("loading");
+  const [txFeeQuickData, setTxFeeQuickData] = useState(null);
+  const [txGasUsedQuickData, setTXGasUsedQuickData] = useState(null);
+  const [dataTxFeeWeekly, setTxFeeWeekly] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Total Fee",
+        data: [],
+        backgroundColor: [colors.secondary[400]],
+        borderColor: colors.secondary[500],
+        borderWidth: 1,
+      },
+    ],
+  });
+  const [txGasUsedWeekly, setTXGasUsedWeekly] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Total Fee",
+        data: [],
+        backgroundColor: [colors.secondary[400]],
+        borderColor: colors.secondary[500],
+        borderWidth: 1,
+      },
+    ],
+  });
+  const [tXGasUsedWeeklyDetailed, setTXGasUsedWeeklyDetailed] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Total Fee",
+        data: [],
+        backgroundColor: [colors.secondary[400]],
+        borderColor: colors.secondary[500],
+        borderWidth: 1,
+      },
+    ],
+  });
+  const [txFeeWeeklyDetailed, setTxFeeWeeklyDetailed] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Total Fee",
+        data: [],
+        backgroundColor: [colors.secondary[400]],
+        borderColor: colors.secondary[500],
+        borderWidth: 1,
+      },
+    ],
+  });
+
+  //
   const [quickData, setQuickData] = useState({});
   const sourceQuickData = apis.queryAllTimeQuickTransactions;
   const [loadingStatus, setLoadingStatus] = useState("loading");
   const [
     statusTotalTransactionFeesPerWeek,
     setStatusTotalTransactionFeesPerWeek,
-  ] = useState("loading");
-  const [statusAverageTPSPerWeek, setStatusAverageTPSPerWeek] =
-    useState("loading");
-  const [
-    statusTotalNumberOfTransactionsPerWeek,
-    setStatusTotalNumberOfTransactionsPerWeek,
-  ] = useState("loading");
-  const [statusAverageBlockTimePerWeek, setStatusAverageBlockTimePerWeek] =
-    useState("loading");
-  const [
-    statusAverageTransactionFeePerTransactionPerWeek,
-    setStatusAverageTransactionFeePerTransactionPerWeek,
   ] = useState("loading");
 
   const [dataTotalTransactionFeesPerWeek, setDataTotalTransactionFeesPerWeek] =
@@ -48,90 +95,147 @@ const Activity = () => {
         },
       ],
     });
-  const [dataAverageTPSPerWeek, setDataAverageTPSPerWeek] = useState({
-    labels: [],
-    datasets: [
-      {
-        label: "Average TPS",
-        data: [],
-        backgroundColor: [colors.secondary[400]],
-        borderColor: colors.secondary[500],
-        borderWidth: 1,
-      },
-    ],
-  });
-
-  const [
-    dataTotalNumberOfTransactionsPerWeek,
-    setDataTotalNumberOfTransactionsPerWeek,
-  ] = useState({
-    labels: [],
-    datasets: [
-      {
-        label: "Transactions",
-        data: [],
-        backgroundColor: [colors.chartPalette[100]],
-        borderColor: colors.chartPalette[100],
-        borderWidth: 3,
-        type: "line",
-      },
-
-      {
-        label: "Sucessful",
-        data: [],
-        backgroundColor: "#0a9396",
-        stack: "base",
-        type: "bar",
-      },
-
-      {
-        label: "Failed",
-        data: [],
-        backgroundColor: "#9b2226",
-        stack: "base",
-        type: "bar",
-      },
-    ],
-  });
-
-  const [dataAverageBlockTimePerWeek, setDataAverageBlockTimePerWeek] =
-    useState({
-      labels: [],
-      datasets: [
-        {
-          label: "Average block time",
-          data: [],
-          backgroundColor: [colors.secondary[400]],
-          borderColor: colors.secondary[500],
-          borderWidth: 1,
-        },
-      ],
-    });
-
-  const [
-    dataAverageTransactionFeePerTransactionPerWeek,
-    setDataAverageTransactionFeePerTransactionPerWeek,
-  ] = useState({
-    labels: [],
-    datasets: [
-      {
-        label: "Average fee",
-        data: [],
-        backgroundColor: [colors.secondary[400]],
-        borderColor: colors.secondary[500],
-        borderWidth: 1,
-      },
-    ],
-  });
 
   useEffect(() => {
-    getQuickData();
-    getTotalTransactionFeesPerWeek();
-    getAverageTPSPerWeek();
-    getTotalNumberOfTransactionsPerWeek();
-    getAverageBlockTimePerWeek();
-    getAverageTransactionFeePerTransactionPerWeek();
+    getTxFeeQuickData();
+    getTxGasUsedQuickData();
+    getTxFeeWeekly();
+    getTxGasUsedWeekly();
   }, []);
+
+  const getTxFeeWeekly = async () => {
+    setStatusTxFeeWeekly("loading");
+    try {
+      const res = await http.get(apis.getTxFeeWeekly);
+      let week = [];
+      let total = [];
+      res.map((data) => {
+        week = [...week, data.WEEK];
+        total = [...total, data.TOTAL];
+      });
+      setTxFeeWeekly({
+        labels: res.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "Total use",
+            data: res.map((data) => data.TOTAL),
+            backgroundColor: colors.chartPalette[100],
+            borderColor: colors.chartPalette[100],
+            borderWidth: 1,
+            type: "line",
+          },
+          {
+            label: "Average use",
+            yAxisID: "avgAxis",
+            data: res.map((data) => data.AVERAGE),
+            backgroundColor: colors.chartPalette[200],
+            borderWidth: 1,
+          },
+        ],
+      });
+
+      setTxFeeWeeklyDetailed({
+        labels: res.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "Average fee",
+            data: res.map((data) => data.MAX),
+            backgroundColor: colors.chartPalette[100],
+            borderColor: colors.chartPalette[100],
+            borderWidth: 1,
+            type: "line",
+          },
+          {
+            label: "Average fee",
+            yAxisID: "medianAxis",
+            data: res.map((data) => data.MEDIAN),
+            backgroundColor: colors.chartPalette[200],
+            borderColor: colors.chartPalette[200],
+            borderWidth: 1,
+            type: "bar",
+          },
+        ],
+      });
+      setStatusTxFeeWeekly("loaded");
+    } catch (error) {
+      setStatusTxFeeWeekly("error");
+    }
+  };
+  const getTxGasUsedWeekly = async () => {
+    setStatusTXGasUsedWeekly("loading");
+
+    try {
+      const res = await http.get(apis.getTxGasUsedWeekly);
+      setTXGasUsedWeekly({
+        labels: res.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "Average use",
+            data: res.map((data) => data.TOTAL),
+            backgroundColor: colors.chartPalette[100],
+            borderColor: colors.chartPalette[100],
+            borderWidth: 1,
+            type: "line",
+          },
+          {
+            label: "Average use",
+            yAxisID: "avgAxis",
+            data: res.map((data) => data.AVERAGE),
+            backgroundColor: colors.chartPalette[200],
+            borderColor: colors.chartPalette[200],
+            borderWidth: 1,
+            type: "bar",
+          },
+        ],
+      });
+
+      setTXGasUsedWeeklyDetailed({
+        labels: res.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "Max use",
+            data: res.map((data) => data.MAX),
+            backgroundColor: colors.chartPalette[100],
+            borderColor: colors.chartPalette[100],
+            borderWidth: 1,
+            type: "line",
+          },
+          {
+            label: "Average fee",
+            yAxisID: "medianAxis",
+            data: res.map((data) => data.MEDIAN),
+            backgroundColor: colors.chartPalette[200],
+            borderColor: colors.chartPalette[200],
+            borderWidth: 1,
+            type: "bar",
+          },
+        ],
+      });
+      setStatusTXGasUsedWeekly("loaded");
+    } catch (error) {
+      setLoadingStatus("error");
+    }
+  };
+  const getTxFeeQuickData = async () => {
+    setStatusTxFeeQuickData("loading");
+    try {
+      const res = await http.get(apis.getTxFeeQuickData);
+      setTxFeeQuickData(res[0]);
+      setStatusTxFeeQuickData("loaded");
+    } catch (error) {
+      setStatusTxFeeQuickData("error");
+    }
+  };
+  const getTxGasUsedQuickData = async () => {
+    setStatusTXGasUsedQuickData("loading");
+    try {
+      const res = await http.get(apis.getGasUsedQuickData);
+      setTXGasUsedQuickData(res[0]);
+      setStatusTXGasUsedQuickData("loaded");
+    } catch (error) {
+      setStatusTXGasUsedQuickData("error");
+    }
+  };
 
   const getQuickData = async () => {
     try {
@@ -166,132 +270,98 @@ const Activity = () => {
     }
   };
 
-  const getAverageTPSPerWeek = async () => {
-    let res = [];
-    setStatusAverageTPSPerWeek("loading");
-    try {
-      res = await http.get(apis.getAverageTPSPerWeek);
-      setDataAverageTPSPerWeek({
-        labels: res.map((data) => data.WEEK),
-        datasets: [
-          {
-            label: "Average TPS",
-            data: res.map((data) => data.AVERAGE_TPS),
-            backgroundColor: [colors.secondary[400]],
-            borderColor: colors.secondary[500],
-            borderWidth: 1,
-          },
-        ],
-      });
-      setStatusAverageTPSPerWeek("loaded");
-    } catch (error) {
-      setStatusAverageTPSPerWeek("error");
-    }
-  };
-
-  const getTotalNumberOfTransactionsPerWeek = async () => {
-    let res = [];
-    setStatusTotalNumberOfTransactionsPerWeek("loading");
-    try {
-      res = await http.get(apis.getTotalNumberOfTransactionsPerWeek);
-      let _sucessful = [];
-      let unsucessful = [];
-      setDataTotalNumberOfTransactionsPerWeek({
-        labels: res.map((data) => data.WEEK),
-        datasets: [
-          {
-            label: "Transactions",
-            data: res.map((data) => data.TOTAL),
-            backgroundColor: [colors.chartPalette[100]],
-            borderColor: colors.chartPalette[100],
-            borderWidth: 3,
-            type: "line",
-          },
-
-          {
-            label: "Sucessful",
-            data: res.map((data) => data.SUCCESSFUL_TRANSACTIONS),
-            backgroundColor: "#0a9396",
-            stack: "base",
-            type: "bar",
-          },
-
-          {
-            label: "Failed",
-            data: res.map((data) => data.FAILED_TRANSACTIONS),
-            backgroundColor: "#9b2226",
-            stack: "base",
-            type: "bar",
-          },
-        ],
-      });
-      setStatusTotalNumberOfTransactionsPerWeek("loaded");
-    } catch (error) {
-      setStatusTotalNumberOfTransactionsPerWeek("error");
-    }
-  };
-
-  const getAverageBlockTimePerWeek = async () => {
-    let res = [];
-    setStatusAverageBlockTimePerWeek("loading");
-    try {
-      res = await http.get(apis.getAverageBlockTimePerWeek);
-      setDataAverageBlockTimePerWeek({
-        labels: res.map((data) => data.WEEK),
-        datasets: [
-          {
-            label: "Average block time",
-            data: res.map((data) => data.AVERAGE_BLOCK_TIME),
-            backgroundColor: [colors.secondary[400]],
-            borderColor: colors.secondary[500],
-            borderWidth: 1,
-          },
-        ],
-      });
-      setStatusAverageBlockTimePerWeek("loaded");
-    } catch (error) {
-      setStatusAverageBlockTimePerWeek("error");
-    }
-  };
-
-  const getAverageTransactionFeePerTransactionPerWeek = async () => {
-    let res = [];
-    setStatusAverageTransactionFeePerTransactionPerWeek("loading");
-    try {
-      res = await http.get(apis.getAverageTransactionFeePerTransactionPerWeek);
-      setDataAverageTransactionFeePerTransactionPerWeek({
-        labels: res.map((data) => data.WEEK),
-        datasets: [
-          {
-            label: "Average fee",
-            data: res.map((data) => data.AVERAGE),
-            backgroundColor: [colors.secondary[400]],
-            borderColor: colors.secondary[500],
-            borderWidth: 1,
-          },
-        ],
-      });
-      setStatusAverageTransactionFeePerTransactionPerWeek("loaded");
-    } catch (error) {
-      setStatusAverageTransactionFeePerTransactionPerWeek("error");
-    }
-  };
-
   return (
     <Box sx={{ padding: "20px" }}>
       <Header
         title="Activity"
-        subtitle="Activity on the Terra network refers to the various actions and transactions that take place on the blockchain,
-         such as transfers of funds, smart contract executions, and voting on governance proposals."
+        subtitle="Activity on the Optimism network refers to the various actions and transactions 
+        that take place on the Ethereum blockchain, such as transfers of funds, smart contract executions, etc."
       />
       <Grid container gap={2}>
         <Grid item xs={12}>
           <Header
             title="Transaction Fee"
-            subtitle="This metric tracks the average fee paid per transaction on the Terra network."
+            subtitle="This metric counts the total number of transactions that have taken place on the
+             Optimism network over a given time period. These transactions are processed off-chain and
+              then recorded on the Ethereum blockchain."
           />
         </Grid>
-        <Grid item xs={12} lg={8}>
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Average tx fee"
+            source={apis.getTxFeeQuickData}
+            info={txFeeQuickData ? txFeeQuickData.AVERAGE.toFixed(5) : null}
+            status={statusTxFeeQuickData}
+            getData={getTxFeeQuickData}
+          />
+        </Grid>
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Total tx fee"
+            source={apis.getTxFeeQuickData}
+            info={
+              txFeeQuickData
+                ? txFeeQuickData.TOTAL.toLocaleString("en-US")
+                : null
+            }
+            status={statusTxFeeQuickData}
+            getData={getTxFeeQuickData}
+          />
+        </Grid>
+
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Highest tx fee"
+            source={apis.getTxFeeQuickData}
+            info={
+              txFeeQuickData ? txFeeQuickData.MAX.toLocaleString("en-US") : null
+            }
+            status={statusTxFeeQuickData}
+            getData={getTxFeeQuickData}
+          />
+        </Grid>
+
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Average gas used"
+            source={apis.getGasUsedQuickData}
+            info={
+              txGasUsedQuickData
+                ? txGasUsedQuickData.AVERAGE.toLocaleString("en-US")
+                : null
+            }
+            status={statusTxGasUsedQuickData}
+            getData={getTxGasUsedQuickData}
+          />
+        </Grid>
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Total gas used"
+            source={apis.getGasUsedQuickData}
+            info={
+              txGasUsedQuickData
+                ? txGasUsedQuickData.TOTAL.toLocaleString("en-US")
+                : null
+            }
+            status={statusTxGasUsedQuickData}
+            getData={getTxGasUsedQuickData}
+          />
+        </Grid>
+
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Highest gas used"
+            source={apis.getGasUsedQuickData}
+            info={
+              txGasUsedQuickData
+                ? txGasUsedQuickData.MAX.toLocaleString("en-US")
+                : null
+            }
+            status={statusTxGasUsedQuickData}
+            getData={getTxGasUsedQuickData}
+          />
+        </Grid>
+        <Grid item xs={12}>
           <Grid
             container
             gap={2}
@@ -300,49 +370,43 @@ const Activity = () => {
             }}
           >
             <MyChart
-              title="Average Transaction Fee Weekly"
-              Chart={AverageTransactionFeePerTransactionPerWeek}
-              url={apis.queryAverageTransactionFeePerTransactionPerWeek}
-              status={statusAverageTransactionFeePerTransactionPerWeek}
-              getData={getAverageTransactionFeePerTransactionPerWeek}
-              data={dataAverageTransactionFeePerTransactionPerWeek}
-              id={"AverageTransactionFeePerTransactionPerWeek"}
+              title="Tx fee"
+              Chart={TxFeeWeekly}
+              url={apis.queryTxFeeWeekly}
+              status={statusTxFeeWeekly}
+              getData={getTxFeeWeekly}
+              data={dataTxFeeWeekly}
+              id={"TxFeeWeekly"}
+            />
+            <MyChart
+              title="Gas used"
+              Chart={GasUsedWeekly}
+              url={apis.queryTxGasUsedWeekly}
+              status={statusTxGasUsedWeekly}
+              getData={getTxGasUsedWeekly}
+              data={txGasUsedWeekly}
+              id={"GasUsedWeekly"}
             />
 
             <MyChart
-              title="Total Transaction Fee Weekly"
-              Chart={TotalTransactionFeesPerWeek}
-              url={apis.queryTotalTransactionFeesPerWeek}
-              status={statusTotalTransactionFeesPerWeek}
-              getData={getTotalTransactionFeesPerWeek}
-              data={dataTotalTransactionFeesPerWeek}
-              id={"TotalTransactionFeesPerWeek"}
+              title="Tx fee details"
+              Chart={TxFeeWeeklyDetailed}
+              url={apis.queryTxFeeWeekly}
+              status={statusTxFeeWeekly}
+              getData={getTxFeeWeekly}
+              data={txFeeWeeklyDetailed}
+              id={"TxFeeWeeklyDetailed"}
+            />
+            <MyChart
+              title="Gas used details"
+              Chart={GasUsedWeeklyDetailed}
+              url={apis.queryTxGasUsedWeekly}
+              status={statusTxGasUsedWeekly}
+              getData={getTxGasUsedWeekly}
+              data={tXGasUsedWeeklyDetailed}
+              id={"GasUsedWeekly"}
             />
           </Grid>
-        </Grid>
-        <Grid item xs={12} lg={3.8}>
-          <InfoCard
-            title="Total Transaction Fee"
-            source={sourceQuickData}
-            info={
-              quickData.TOTAL_FEE
-                ? quickData.TOTAL_FEE.toLocaleString("en-US")
-                : null
-            }
-            status={loadingStatus}
-            getData={getQuickData}
-          />
-          <InfoCard
-            title="Average Transaction Fee"
-            source={sourceQuickData}
-            info={
-              quickData.AVERAGE_FEE
-                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
-                : null
-            }
-            status={loadingStatus}
-            getData={getQuickData}
-          />
         </Grid>
       </Grid>
 
@@ -356,11 +420,51 @@ const Activity = () => {
         <Grid item xs={12}>
           <Header
             title="Transactions count"
-            subtitle="This metric counts the total number of transactions that have taken place on the Terra network over a given time period.
-          "
+            subtitle="This metric counts the total number of transactions that
+             have taken place on the Optimism network over a given time period."
           />
         </Grid>
-        <Grid item xs={12} lg={8}>
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Average tx fee"
+            source={sourceQuickData}
+            info={
+              quickData.AVERAGE_FEE
+                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
+                : null
+            }
+            status={loadingStatus}
+            getData={getQuickData}
+          />
+        </Grid>
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Total tx fee"
+            source={sourceQuickData}
+            info={
+              quickData.TOTAL_FEE
+                ? quickData.TOTAL_FEE.toLocaleString("en-US")
+                : null
+            }
+            status={loadingStatus}
+            getData={getQuickData}
+          />
+        </Grid>
+
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Highest tx fee"
+            source={sourceQuickData}
+            info={
+              quickData.AVERAGE_FEE
+                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
+                : null
+            }
+            status={loadingStatus}
+            getData={getQuickData}
+          />
+        </Grid>
+        <Grid item xs={12}>
           <Grid
             container
             gap={2}
@@ -369,43 +473,41 @@ const Activity = () => {
             }}
           >
             <MyChart
-              title="Total Number Of Transactions Per Week"
-              Chart={TotalNumberOfTransactionsPerWeek}
-              url={apis.queryTotalNumberOfTransactionsPerWeek}
-              status={statusTotalNumberOfTransactionsPerWeek}
-              getData={getTotalNumberOfTransactionsPerWeek}
-              data={dataTotalNumberOfTransactionsPerWeek}
-              id={"TotalNumberOfTransactionsPerWeek"}
-              defaultSize={100}
+              title="Tx fee"
+              Chart={TxFeeWeekly}
+              url={apis.queryTxFeeWeekly}
+              status={statusTxFeeWeekly}
+              getData={getTxFeeWeekly}
+              data={dataTxFeeWeekly}
+              id={"TxFeeWeekly"}
             />
-          </Grid>
-        </Grid>
-        <Grid item xs={12} lg={3.8}>
-          <Grid
-            container
-            sx={{
-              width: "100%",
-            }}
-          >
-            <InfoCard
-              title="Number of Transactions"
-              source={sourceQuickData}
-              info={
-                quickData.TOTAL_TRANSACTIONS
-                  ? quickData.TOTAL_TRANSACTIONS.toLocaleString("en-US")
-                  : null
-              }
-              status={loadingStatus}
-              getData={getQuickData}
+            <MyChart
+              title="Gas used"
+              Chart={TotalTransactionFeesPerWeek}
+              url={apis.queryTotalTransactionFeesPerWeek}
+              status={statusTotalTransactionFeesPerWeek}
+              getData={getTotalTransactionFeesPerWeek}
+              data={dataTotalTransactionFeesPerWeek}
+              id={"TotalTransactionFeesPerWeek"}
             />
-            <InfoCard
-              title="Number of transaction senders"
-              source={sourceQuickData}
-              info={
-                quickData.USERS ? quickData.USERS.toLocaleString("en-US") : null
-              }
-              status={loadingStatus}
-              getData={getQuickData}
+
+            <MyChart
+              title="Tx fee details"
+              Chart={TxFeeWeekly}
+              url={apis.queryTxFeeWeekly}
+              status={statusTxFeeWeekly}
+              getData={getTxFeeWeekly}
+              data={dataTxFeeWeekly}
+              id={"TxFeeWeekly"}
+            />
+            <MyChart
+              title="Gas used details"
+              Chart={TotalTransactionFeesPerWeek}
+              url={apis.queryTotalTransactionFeesPerWeek}
+              status={statusTotalTransactionFeesPerWeek}
+              getData={getTotalTransactionFeesPerWeek}
+              data={dataTotalTransactionFeesPerWeek}
+              id={"TotalTransactionFeesPerWeek"}
             />
           </Grid>
         </Grid>
@@ -420,14 +522,13 @@ const Activity = () => {
       >
         <Grid item xs={12}>
           <Header
-            title="TPS and block time"
-            subtitle="TPS (transactions per second) measures the speed at which transactions 
-          are processed on the Terra network, while block time refers to the average time 
-          it takes for a new block to be added to the blockchain. Together,
-           these metrics can give an indication of the overall performance and efficiency of the network."
+            title="Transactions function"
+            subtitle="The transactions function signature is a unique identifier for a function within
+             a smart contract on the Optimism network. It is used to specify which
+             function is being called when interacting with a smart contract on the Ethereum blockchain."
           />
         </Grid>
-        <Grid item xs={12} lg={8}>
+        <Grid item xs={12}>
           <Grid
             container
             gap={2}
@@ -436,50 +537,164 @@ const Activity = () => {
             }}
           >
             <MyChart
-              title="Average Block Time Per Week"
-              Chart={AverageBlockTimePerWeek}
-              url={apis.queryAverageBlockTimePerWeek}
-              status={statusAverageBlockTimePerWeek}
-              getData={getAverageBlockTimePerWeek}
-              data={dataAverageBlockTimePerWeek}
-              id={"AverageBlockTimePerWeek"}
+              title="Most used function signatures"
+              Chart={TxFeeWeekly}
+              url={apis.queryTxFeeWeekly}
+              status={statusTxFeeWeekly}
+              getData={getTxFeeWeekly}
+              data={dataTxFeeWeekly}
+              id={"TxFeeWeekly"}
             />
-
             <MyChart
-              title="Average TPS Per Week"
-              Chart={AverageTPSPerWeek}
-              url={apis.queryAverageTPSPerWeek}
-              status={statusAverageTPSPerWeek}
-              getData={getAverageTPSPerWeek}
-              data={dataAverageTPSPerWeek}
-              id="AverageTPSPerWeek"
+              title="Most used functions weekly"
+              Chart={TotalTransactionFeesPerWeek}
+              url={apis.queryTotalTransactionFeesPerWeek}
+              status={statusTotalTransactionFeesPerWeek}
+              getData={getTotalTransactionFeesPerWeek}
+              data={dataTotalTransactionFeesPerWeek}
+              id={"TotalTransactionFeesPerWeek"}
             />
           </Grid>
         </Grid>
+      </Grid>
+
+      <Grid
+        container
+        gap={2}
+        sx={{
+          marginTop: "80px",
+        }}
+      >
+        <Grid item xs={12}>
+          <Header
+            title="Blocks"
+            subtitle="TPS (transactions per second) measures the speed at which transactions are processed on the Optimism network,
+             while block time refers to the average time it takes for a new block to be added to the blockchain."
+          />
+        </Grid>
         <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="# of blocks"
+            source={sourceQuickData}
+            info={
+              quickData.AVERAGE_FEE
+                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
+                : null
+            }
+            status={loadingStatus}
+            getData={getQuickData}
+          />
+        </Grid>
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Average # of transactions per block"
+            source={sourceQuickData}
+            info={
+              quickData.TOTAL_FEE
+                ? quickData.TOTAL_FEE.toLocaleString("en-US")
+                : null
+            }
+            status={loadingStatus}
+            getData={getQuickData}
+          />
+        </Grid>
+
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Average block time"
+            source={sourceQuickData}
+            info={
+              quickData.AVERAGE_FEE
+                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
+                : null
+            }
+            status={loadingStatus}
+            getData={getQuickData}
+          />
+        </Grid>
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Last created block"
+            source={sourceQuickData}
+            info={
+              quickData.AVERAGE_FEE
+                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
+                : null
+            }
+            status={loadingStatus}
+            getData={getQuickData}
+          />
+        </Grid>
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Average block difficulty"
+            source={sourceQuickData}
+            info={
+              quickData.AVERAGE_FEE
+                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
+                : null
+            }
+            status={loadingStatus}
+            getData={getQuickData}
+          />
+        </Grid>
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="Average block size"
+            source={sourceQuickData}
+            info={
+              quickData.AVERAGE_FEE
+                ? quickData.AVERAGE_FEE.toLocaleString("en-US")
+                : null
+            }
+            status={loadingStatus}
+            getData={getQuickData}
+          />
+        </Grid>
+        <Grid item xs={12}>
           <Grid
             container
+            gap={2}
             sx={{
-              width: "100%",
+              justifyContent: "start",
             }}
           >
-            <InfoCard
-              title="Number of blocks"
-              source={sourceQuickData}
-              info={
-                quickData.TOTAL_BLOCKS
-                  ? quickData.TOTAL_BLOCKS.toLocaleString("en-US")
-                  : null
-              }
-              status={loadingStatus}
-              getData={getQuickData}
+            <MyChart
+              title="Block"
+              Chart={TxFeeWeekly}
+              url={apis.queryTxFeeWeekly}
+              status={statusTxFeeWeekly}
+              getData={getTxFeeWeekly}
+              data={dataTxFeeWeekly}
+              id={"TxFeeWeekly"}
             />
-            <InfoCard
-              title="Average TPS"
-              source={sourceQuickData}
-              info={quickData.TPS ? quickData.TPS.toFixed(2) : null}
-              status={loadingStatus}
-              getData={getQuickData}
+            <MyChart
+              title="Block time"
+              Chart={TotalTransactionFeesPerWeek}
+              url={apis.queryTotalTransactionFeesPerWeek}
+              status={statusTotalTransactionFeesPerWeek}
+              getData={getTotalTransactionFeesPerWeek}
+              data={dataTotalTransactionFeesPerWeek}
+              id={"TotalTransactionFeesPerWeek"}
+            />
+
+            <MyChart
+              title="Block difficulty"
+              Chart={TxFeeWeekly}
+              url={apis.queryTxFeeWeekly}
+              status={statusTxFeeWeekly}
+              getData={getTxFeeWeekly}
+              data={dataTxFeeWeekly}
+              id={"TxFeeWeekly"}
+            />
+            <MyChart
+              title="Block size"
+              Chart={TotalTransactionFeesPerWeek}
+              url={apis.queryTotalTransactionFeesPerWeek}
+              status={statusTotalTransactionFeesPerWeek}
+              getData={getTotalTransactionFeesPerWeek}
+              data={dataTotalTransactionFeesPerWeek}
+              id={"TotalTransactionFeesPerWeek"}
             />
           </Grid>
         </Grid>

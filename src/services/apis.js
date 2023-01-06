@@ -38,6 +38,22 @@ const getPastDayTxSuccessRate =
   "https://node-api.flipsidecrypto.com/api/v2/queries/c97e6239-0b71-4733-aadb-63d70d379671/data/latest";
 
 // Transactions
+
+const getTxFeeQuickData =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/9ceea697-b22a-4c8a-8fa2-94e1959366d3/data/latest";
+
+const getGasUsedQuickData =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/2d14bc31-f871-4894-ad45-c41fc5b923b6/data/latest";
+
+const getTxFeeWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/6f3b4582-985e-427a-bb91-176d59310143/data/latest";
+const queryTxFeeWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/6f3b4582-985e-427a-bb91-176d59310143";
+
+const getTxGasUsedWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/6b963970-ccfc-4b7b-8a8e-55786ad1f976/data/latest";
+const queryTxGasUsedWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/6b963970-ccfc-4b7b-8a8e-55786ad1f976";
 const getAverageTransactionFeePerTransactionPerWeek =
   "https://node-api.flipsidecrypto.com/api/v2/queries/ce70d394-0d9a-42da-a45d-5447e3fbe723/data/latest";
 const getTotalTransactionFeesPerWeek =
@@ -216,4 +232,10 @@ export default {
   getPastDayGasPrice,
   getPastDayTotalFee,
   getPastDayTxSuccessRate,
+  getTxFeeQuickData,
+  getGasUsedQuickData,
+  getTxFeeWeekly,
+  queryTxFeeWeekly,
+  getTxGasUsedWeekly,
+  queryTxGasUsedWeekly,
 };
