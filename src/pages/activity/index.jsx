@@ -17,6 +17,8 @@ import L1GasUsed from "./L1GasUsed";
 import TxSendersReceivers from "./txSendersReceivers";
 import FunctionDistribution from "./functionDistribution";
 import MoastUsedFunctionWeekly from "./mostUsedFunctionWeekly";
+import MostUsedProtocolAction from "./mostUsedProtocolActions";
+import MostUsedProtocolActionsWeekly from "./mostUsedProtocolActionsWeekly";
 
 const Activity = () => {
   const theme = useTheme();
@@ -186,6 +188,19 @@ const Activity = () => {
   const [dataFunctionDistribution, setDataFunctionDistribution] =
     useState(null);
 
+  // Most used actions
+  const [statusMostUsedProtocolActions, setStatusMostUsedProtocolActions] =
+    useState("loading");
+  const [
+    statusMostUsedProtocolActionsWeekly,
+    setStatusMostUsedProtocolActionsWeekly,
+  ] = useState("loading");
+  const [
+    dataMostUsedProtocolActionsWeekly,
+    setDataMostUsedProtocolActionsWeekly,
+  ] = useState(null);
+  const [dataMostUsedProtocolActions, setDataMostUsedProtocolActions] =
+    useState(null);
   //
   const [quickData, setQuickData] = useState({});
   const sourceQuickData = apis.queryAllTimeQuickTransactions;
@@ -225,6 +240,8 @@ const Activity = () => {
     getL1GasUsed();
     getFunctionDistribution();
     getMostUsedFunctionWeekly();
+    getMostUsedProtocolActions();
+    getMostUsedProtocolActionsWeekly();
   }, []);
 
   // Transaction Fee
@@ -695,6 +712,123 @@ const Activity = () => {
     }
   };
 
+  // Mose Used Actions
+  const getMostUsedProtocolActions = async () => {
+    setStatusMostUsedProtocolActions("loading");
+    try {
+      const res = await http.get(apis.getMostUsedProtocolActions);
+      let temp = [];
+      res.map((data, index) => {
+        temp = [
+          ...temp,
+          {
+            id: data.LABEL_TYPE,
+            label: data.LABEL_TYPE,
+            value: data.COUNT,
+            color: colors.chartPalette[(index + 1) * 100],
+          },
+        ];
+      });
+      setDataMostUsedProtocolActions(temp);
+      setStatusMostUsedProtocolActions("loaded");
+    } catch (error) {
+      setStatusMostUsedProtocolActions("error");
+    }
+  };
+
+  const getMostUsedProtocolActionsWeekly = async () => {
+    let res = [];
+    setStatusMostUsedProtocolActionsWeekly("loading");
+    try {
+      res = await http.get(apis.getMostUsedProtocolActionsWeekly);
+      let _dapp = [];
+      let _token = [];
+      let _defi = [];
+      let _layer2 = [];
+      let _nft = [];
+      let _dex = [];
+      let _chadmin = [];
+      let _cex = [];
+      let _operator = [];
+      await res.map((data) => {
+        if (data.LABEL_TYPE === "dapp") _dapp = [..._dapp, data];
+        else if (data.LABEL_TYPE === "token") _token = [..._token, data];
+        else if (data.LABEL_TYPE === "defi") _defi = [..._defi, data];
+        else if (data.LABEL_TYPE === "layer2") _layer2 = [..._layer2, data];
+        else if (data.LABEL_TYPE === "nft") _nft = [..._nft, data];
+        else if (data.LABEL_TYPE === "dex") _dex = [..._dex, data];
+        else if (data.LABEL_TYPE === "chadmin") _chadmin = [..._chadmin, data];
+        else if (data.LABEL_TYPE === "cex") _cex = [..._cex, data];
+        else if (data.LABEL_TYPE === "operator")
+          _operator = [..._operator, data];
+      });
+
+      setDataMostUsedProtocolActionsWeekly({
+        labels: _dex.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "dapp",
+            data: _dapp.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[100],
+            stack: "base",
+          },
+          {
+            label: "token",
+            data: _token.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[200],
+            stack: "base",
+          },
+          {
+            label: "defi",
+            data: _defi.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[300],
+            stack: "base",
+          },
+          {
+            label: "layer2",
+            data: _layer2.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[400],
+            stack: "base",
+          },
+          {
+            label: "nft",
+            data: _nft.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[500],
+            stack: "base",
+          },
+          {
+            label: "dex",
+            data: _dex.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[600],
+            stack: "base",
+          },
+          {
+            label: "chadmin",
+            data: _chadmin.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[700],
+            stack: "base",
+          },
+          {
+            label: "cex",
+            data: _cex.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[800],
+            stack: "base",
+          },
+          {
+            label: "operator",
+            data: _operator.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[900],
+            stack: "base",
+          },
+        ],
+      });
+
+      setStatusMostUsedProtocolActionsWeekly("loaded");
+    } catch (error) {
+      setStatusMostUsedProtocolActionsWeekly("error");
+    }
+  };
+
   //
   const getQuickData = async () => {
     try {
@@ -985,6 +1119,93 @@ const Activity = () => {
             subtitle="The transactions function signature is a unique identifier for a function within
              a smart contract on the Optimism network. It is used to specify which
              function is being called when interacting with a smart contract on the Ethereum blockchain."
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Grid
+            container
+            gap={2}
+            sx={{
+              justifyContent: "start",
+            }}
+          >
+            <MyChart
+              title="Most used function signatures"
+              Chart={FunctionDistribution}
+              url={apis.queryFunctionDistribution}
+              status={statusFunctionDistribution}
+              getData={getFunctionDistribution}
+              data={dataFunctionDistribution}
+              id={"FunctionDistribution"}
+            />
+            <MyChart
+              title="Most used functions weekly"
+              Chart={MoastUsedFunctionWeekly}
+              url={apis.queryMostUsedContracts}
+              status={statusMostUsedFunctionWeekly}
+              getData={getMostUsedFunctionWeekly}
+              data={dataMostUsedFunctionWeekly}
+              id={"MoastUsedFunctionWeekly"}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid
+        container
+        gap={2}
+        sx={{
+          marginTop: "80px",
+        }}
+      >
+        <Grid item xs={12}>
+          <Header
+            title="Most used actions"
+            subtitle="the functions or activities that are most frequently called or executed on the Optimism network."
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Grid
+            container
+            gap={2}
+            sx={{
+              justifyContent: "start",
+            }}
+          >
+            <MyChart
+              title="Most used protocol actions"
+              Chart={MostUsedProtocolAction}
+              url={apis.queryMostUsedProtocolActions}
+              status={statusMostUsedProtocolActions}
+              getData={getMostUsedProtocolActions}
+              data={dataMostUsedProtocolActions}
+              id={"getMostUsedProtocolActions"}
+            />
+            <MyChart
+              title="Most used protocol actions weekly"
+              Chart={MostUsedProtocolActionsWeekly}
+              url={apis.queryMostUsedProtocolActionsWeekly}
+              status={statusMostUsedProtocolActionsWeekly}
+              getData={getMostUsedProtocolActionsWeekly}
+              data={dataMostUsedProtocolActionsWeekly}
+              id={"MostUsedProtocolActionsWeekly"}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid
+        container
+        gap={2}
+        sx={{
+          marginTop: "80px",
+        }}
+      >
+        <Grid item xs={12}>
+          <Header
+            title="Most used projects"
+            subtitle="the smart contracts or decentralized applications (dApps)
+             that are most frequently accessed and utilized by users."
           />
         </Grid>
         <Grid item xs={12}>

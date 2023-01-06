@@ -130,6 +130,14 @@ const getFunctionWeekly =
 const queryFunctionWeekly =
   "https://app.flipsidecrypto.com/velocity/queries/78c354a7-0a6a-46c6-943e-d39169331747";
 
+const getMostUsedProtocolActions =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/28c2b795-6a51-48c8-ad72-5fdd8688adf7/data/latest";
+const queryMostUsedProtocolActions =
+  "https://app.flipsidecrypto.com/velocity/queries/28c2b795-6a51-48c8-ad72-5fdd8688adf7";
+const getMostUsedProtocolActionsWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/1f99fcd5-bbbd-41e8-88c6-2ba112991969/data/latest";
+const queryMostUsedProtocolActionsWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/1f99fcd5-bbbd-41e8-88c6-2ba112991969";
 // Wallets
 const getTotalNumberOfNewWalletsPerWeek =
   "https://api.flipsidecrypto.com/api/v2/queries/85d7bd06-f44a-487c-87d5-b0671438c9d7/data/latest";
@@ -291,4 +299,8 @@ export default {
   queryFunctionDistribution,
   getFunctionWeekly,
   queryFunctionWeekly,
+  getMostUsedProtocolActions,
+  queryMostUsedProtocolActions,
+  getMostUsedProtocolActionsWeekly,
+  queryMostUsedProtocolActionsWeekly,
 };
