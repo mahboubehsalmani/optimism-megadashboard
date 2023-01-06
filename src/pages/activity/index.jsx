@@ -15,6 +15,8 @@ import TxWeekly from "./txWeekly";
 import TPSWeekly from "./TPSWeekly";
 import L1GasUsed from "./L1GasUsed";
 import TxSendersReceivers from "./txSendersReceivers";
+import FunctionDistribution from "./functionDistribution";
+import MoastUsedFunctionWeekly from "./mostUsedFunctionWeekly";
 
 const Activity = () => {
   const theme = useTheme();
@@ -174,6 +176,16 @@ const Activity = () => {
     useState(null);
   const [dataAverageTPSQuickData, setDataAverageTPSQuickData] = useState(null);
 
+  // Transaction Function
+  const [statusFunctionDistribution, setStatusFunctionDistribution] =
+    useState("loading");
+  const [statusMostUsedFunctionWeekly, setStatusMostUsedFunctionWeekly] =
+    useState("loading");
+  const [dataMostUsedFunctionWeekly, setDataMostUsedFunctionWeekly] =
+    useState(null);
+  const [dataFunctionDistribution, setDataFunctionDistribution] =
+    useState(null);
+
   //
   const [quickData, setQuickData] = useState({});
   const sourceQuickData = apis.queryAllTimeQuickTransactions;
@@ -211,6 +223,8 @@ const Activity = () => {
     getTPSWeekly();
     getSenderReceiver();
     getL1GasUsed();
+    getFunctionDistribution();
+    getMostUsedFunctionWeekly();
   }, []);
 
   // Transaction Fee
@@ -508,8 +522,180 @@ const Activity = () => {
     }
   };
 
-  //
+  // Transaction Function
+  const getFunctionDistribution = async () => {
+    setStatusFunctionDistribution("loading");
+    try {
+      const res = await http.get(apis.getFunctionDistribution);
+      let temp = [];
+      res.map((data, index) => {
+        temp = [
+          ...temp,
+          {
+            id: data.SIGNATURE,
+            label: data.SIGNATURE,
+            value: data.COUNT,
+            color: colors.chartPalette[(index + 1) * 100],
+          },
+        ];
+      });
+      setDataFunctionDistribution(temp);
+      setStatusFunctionDistribution("loaded");
+    } catch (error) {
+      setStatusFunctionDistribution("error");
+    }
+  };
 
+  const getMostUsedFunctionWeekly = async () => {
+    let res = [];
+    setStatusMostUsedFunctionWeekly("loading");
+    try {
+      res = await http.get(apis.getFunctionWeekly);
+      let week = [];
+      let _Approve = [];
+      let _sign_szabo = [];
+      let _openPosition = [];
+      let _transmit = [];
+      let _multicall = [];
+      let _submit = [];
+      let _many_msg_babbage = [];
+      let _func_2093253501 = [];
+      let _transfer = [];
+      let _addLiquidity = [];
+      let _setL1BaseFee = [];
+      let _swapAndSend = [];
+      let _swapExactTokensForTokensSimple = [];
+      let _mintToken = [];
+
+      await res.map((data) => {
+        week = [...week, data.WEEK];
+        if (data.FUNCTION === "Approve") _Approve = [..._Approve, data];
+        else if (data.FUNCTION === "sign_szabo")
+          _sign_szabo = [..._sign_szabo, data];
+        else if (data.FUNCTION === "openPosition")
+          _openPosition = [..._openPosition, data];
+        else if (data.FUNCTION === "transmit") _transmit = [..._transmit, data];
+        else if (data.FUNCTION === "multicall")
+          _multicall = [..._multicall, data];
+        else if (data.FUNCTION === "submit") _submit = [..._submit, data];
+        else if (data.FUNCTION === "many_msg_babbage")
+          _many_msg_babbage = [..._many_msg_babbage, data];
+        else if (data.FUNCTION === "func_2093253501")
+          _func_2093253501 = [..._func_2093253501, data];
+        else if (data.FUNCTION === "transfer") _transfer = [..._transfer, data];
+        else if (data.FUNCTION === "addLiquidity")
+          _addLiquidity = [..._addLiquidity, data];
+        else if (data.FUNCTION === "setL1BaseFee")
+          _setL1BaseFee = [..._setL1BaseFee, data];
+        else if (data.FUNCTION === "swapAndSend")
+          _swapAndSend = [..._swapAndSend, data];
+        else if (data.FUNCTION === "swapExactTokensForTokensSimple")
+          _swapExactTokensForTokensSimple = [
+            ..._swapExactTokensForTokensSimple,
+            data,
+          ];
+        else if (data.FUNCTION === "mintToken")
+          _mintToken = [..._mintToken, data];
+      });
+      setDataMostUsedFunctionWeekly({
+        labels: _Approve.map((data) => data.WEEK),
+        datasets: [
+          {
+            label: "Approved",
+            data: _Approve.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[100],
+            stack: "base",
+          },
+          {
+            label: "addLiquidity",
+            data: _addLiquidity.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[200],
+            stack: "base",
+          },
+          {
+            label: "func_2093253501",
+            data: _func_2093253501.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[300],
+            stack: "base",
+          },
+          {
+            label: "many_msg_babbage",
+            data: _many_msg_babbage.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[400],
+            stack: "base",
+          },
+          {
+            label: "mintToken",
+            data: _mintToken.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[500],
+            stack: "base",
+          },
+          {
+            label: "multicall",
+            data: _multicall.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[600],
+            stack: "base",
+          },
+          {
+            label: "openPosition",
+            data: _openPosition.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[700],
+            stack: "base",
+          },
+          {
+            label: "setL1BaseFee",
+            data: _setL1BaseFee.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[800],
+            stack: "base",
+          },
+          {
+            label: "submit",
+            data: _submit.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[900],
+            stack: "base",
+          },
+          {
+            label: "sign_szabo",
+            data: _sign_szabo.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[100],
+            stack: "base",
+          },
+          {
+            label: "swapAndSend",
+            data: _swapAndSend.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[200],
+            stack: "base",
+          },
+          {
+            label: "transmit",
+            data: _transmit.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[300],
+            stack: "base",
+          },
+
+          {
+            label: "swapExactTokensForTokensSimple",
+            data: _swapExactTokensForTokensSimple.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[400],
+            stack: "base",
+          },
+
+          {
+            label: "transfer",
+            data: _transfer.map((data) => data.COUNT),
+            backgroundColor: colors.chartPalette[500],
+            stack: "base",
+          },
+        ],
+      });
+
+      setStatusMostUsedFunctionWeekly("loaded");
+    } catch (error) {
+      setStatusMostUsedFunctionWeekly("error");
+    }
+  };
+
+  //
   const getQuickData = async () => {
     try {
       const res = await http.get(apis.getAllTimeQuickTransactions);
@@ -811,21 +997,21 @@ const Activity = () => {
           >
             <MyChart
               title="Most used function signatures"
-              Chart={TxFeeWeekly}
-              url={apis.queryTxFeeWeekly}
-              status={statusTxFeeWeekly}
-              getData={getTxFeeWeekly}
-              data={dataTxFeeWeekly}
-              id={"TxFeeWeekly"}
+              Chart={FunctionDistribution}
+              url={apis.queryFunctionDistribution}
+              status={statusFunctionDistribution}
+              getData={getFunctionDistribution}
+              data={dataFunctionDistribution}
+              id={"FunctionDistribution"}
             />
             <MyChart
               title="Most used functions weekly"
-              Chart={TotalTransactionFeesPerWeek}
-              url={apis.queryTotalTransactionFeesPerWeek}
-              status={statusTotalTransactionFeesPerWeek}
-              getData={getTotalTransactionFeesPerWeek}
-              data={dataTotalTransactionFeesPerWeek}
-              id={"TotalTransactionFeesPerWeek"}
+              Chart={MoastUsedFunctionWeekly}
+              url={apis.queryMostUsedContracts}
+              status={statusMostUsedFunctionWeekly}
+              getData={getMostUsedFunctionWeekly}
+              data={dataMostUsedFunctionWeekly}
+              id={"MoastUsedFunctionWeekly"}
             />
           </Grid>
         </Grid>

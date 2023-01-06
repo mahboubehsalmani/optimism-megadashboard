@@ -120,6 +120,16 @@ const getL1GasUsedWeekly =
 const queryL1GasUsedWeekly =
   "https://app.flipsidecrypto.com/velocity/queries/073078bf-c542-4a6a-9832-af8feb0b8542";
 
+const getFunctionDistribution =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/ff79db4b-c06a-4aee-8c6c-005df43f426d/data/latest";
+const queryFunctionDistribution =
+  "https://app.flipsidecrypto.com/velocity/queries/ff79db4b-c06a-4aee-8c6c-005df43f426d";
+
+const getFunctionWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/78c354a7-0a6a-46c6-943e-d39169331747/data/latest";
+const queryFunctionWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/78c354a7-0a6a-46c6-943e-d39169331747";
+
 // Wallets
 const getTotalNumberOfNewWalletsPerWeek =
   "https://api.flipsidecrypto.com/api/v2/queries/85d7bd06-f44a-487c-87d5-b0671438c9d7/data/latest";
@@ -277,4 +287,8 @@ export default {
   querySenderReceiverWeekly,
   getL1GasUsedWeekly,
   queryL1GasUsedWeekly,
+  getFunctionDistribution,
+  queryFunctionDistribution,
+  getFunctionWeekly,
+  queryFunctionWeekly,
 };
