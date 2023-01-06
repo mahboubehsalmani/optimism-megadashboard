@@ -1,8 +1,8 @@
 import { useTheme } from "@mui/material";
+import PieChart from "../../components/PieChart";
 import { tokens } from "../../theme";
-import LineChart from "../../components/LineChart";
 
-const TotalNumberOfActiveWalletsPerWeek = ({ data, chartWidth }) => {
+const DistributionOfWallets = ({ data, id }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -12,6 +12,7 @@ const TotalNumberOfActiveWalletsPerWeek = ({ data, chartWidth }) => {
     plugins: {
       legend: {
         position: "top",
+        display: false,
       },
       title: {
         display: true,
@@ -30,7 +31,7 @@ const TotalNumberOfActiveWalletsPerWeek = ({ data, chartWidth }) => {
         title: {
           display: true,
           color: colors.secondary[400],
-          text: "Average",
+          text: "Volume (LUNA)",
         },
       },
       x: {
@@ -52,9 +53,7 @@ const TotalNumberOfActiveWalletsPerWeek = ({ data, chartWidth }) => {
     },
   };
 
-  return (
-    <LineChart chartData={data} options={options} chartWidth={chartWidth} />
-  );
+  return <PieChart data={data} id={id} />;
 };
 
-export default TotalNumberOfActiveWalletsPerWeek;
+export default DistributionOfWallets;

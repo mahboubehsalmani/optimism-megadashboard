@@ -2,39 +2,31 @@ import { Box, Grid, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import apis from "../../services/apis";
-import TotalNumberOfActiveWalletsPerWeek from "./totalNumberOfActiveWalletsPerWeek";
 import CumulativeNumberOfWalletsOverTime from "./cumulativeNumberOfWalletsOverTime";
 import MyChart from "../../components/MyChart";
 import { useEffect, useState } from "react";
 import http from "../../services/http";
 import InfoCard from "../../components/InfoCard";
-import MyTable from "../../components/MaterialTable";
-import RichList from "../../data/richList";
+import ActiveNewWallet from "./activeNewWallet";
+import DistributionOfWallets from "./distributionOfWallets";
 
 const Wallets = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [list, setList] = useState([]);
-  const [numberOfWallets, setNumberOfWallets] = useState(null);
-  const [statusNumberOfWallets, setStatusNumberOfWallets] = useState("loading");
-  const [activeNewWallet, setActiveNewWallet] = useState(null);
+  const [statusWalletQuickData, setStatusWalletQuickData] = useState("loading");
   const [statusActiveNewWallet, setStatusActiveNewWallet] = useState("loading");
-  const [statusAverageTxPerWallet, setStatusAverageTxPerWallet] =
+  const [statusDistributionOfWallets, setStatusDistributionOfWallets] =
     useState("loading");
-  const [averageTxPerWallet, setAverageTxPerWallet] = useState(null);
-  const [
-    statusTotalNumberOfActiveWalletsPerWeek,
-    setStatusTotalNumberOfActiveWalletsPerWeek,
-  ] = useState("loading");
+  const [dataDistributionOfWallets, setDataDistributionOfWallets] =
+    useState(null);
+  const [walletQuickData, setWalletQuickData] = useState(null);
+
   const [
     statusCumulativeNumberOfWalletsOverTime,
     setStatusCumulativeNumberOfWalletsOverTime,
   ] = useState("loading");
-  const [
-    dataTotalNumberOfActiveWalletsPerWeek,
-    setDataTotalNumberOfActiveWalletsPerWeek,
-  ] = useState({
+  const [dataActiveNewWallet, setDataActiveNewWallet] = useState({
     labels: [],
     datasets: [
       {
@@ -71,32 +63,43 @@ const Wallets = () => {
   });
 
   useEffect(() => {
-    getTotalNumberOfActiveWalletsPerWeek();
+    getDistributionOfWallets();
     getCumulativeNumberOfWalletsOverTime();
-    getNumberOfWallets();
     getActiveNewWallet();
-    getAverageTxPerWallet();
-    getRichList();
+    getQuickData();
   }, []);
 
-  const getAverageTxPerWallet = async () => {
-    setStatusAverageTxPerWallet("loading");
+  const getQuickData = async () => {
+    setStatusWalletQuickData("loading");
     try {
-      const res = await http.get(apis.getAverageTxPerWallet);
-      setAverageTxPerWallet(res[0].AVERAGE_TX_PER_WALLET);
-      setStatusAverageTxPerWallet("loaded");
+      const res = await http.get(apis.getWalletQuickData);
+      const resAvg = await http.get(apis.getWalletAvgQuickData);
+      setWalletQuickData({ ...res[0], ...resAvg[0] });
+      setStatusWalletQuickData("loaded");
     } catch (error) {
-      setStatusAverageTxPerWallet("error");
+      setStatusWalletQuickData("error");
     }
   };
-  const getNumberOfWallets = async () => {
-    setStatusNumberOfWallets("loading");
+  const getDistributionOfWallets = async () => {
+    setStatusDistributionOfWallets("loading");
     try {
-      const res = await http.get(apis.getNumberofWallets);
-      setNumberOfWallets(res[0].WALLETS);
-      setStatusNumberOfWallets("loaded");
+      const res = await http.get(apis.getDistributionOfWallets);
+      let temp = [];
+      res.map((data, index) => {
+        temp = [
+          ...temp,
+          {
+            id: data.SLICE,
+            label: data.SLICE,
+            value: data.ANGLE,
+            color: colors.chartPalette[(index + 1) * 100],
+          },
+        ];
+      });
+      setDataDistributionOfWallets(temp);
+      setStatusDistributionOfWallets("loaded");
     } catch (error) {
-      setStatusNumberOfWallets("error");
+      setStatusDistributionOfWallets("error");
     }
   };
 
@@ -104,22 +107,12 @@ const Wallets = () => {
     setStatusActiveNewWallet("loading");
     try {
       const res = await http.get(apis.getActiveNewWallets);
-      setActiveNewWallet(res[0]);
-      setStatusActiveNewWallet("loaded");
-    } catch (error) {
-      setStatusActiveNewWallet("error");
-    }
-  };
-  const getTotalNumberOfActiveWalletsPerWeek = async () => {
-    let res = [];
 
-    try {
-      res = await http.get(apis.getTotalNumberOfActiveWalletsPerWeek);
-      setDataTotalNumberOfActiveWalletsPerWeek({
+      setDataActiveNewWallet({
         labels: res.map((data) => data.WEEK),
         datasets: [
           {
-            label: "ACTIVE WALLETS",
+            label: "Active",
             data: res.map((data) => data.ACTIVE_WALLETS),
             backgroundColor: colors.chartPalette[100],
             borderColor: colors.chartPalette[100],
@@ -127,7 +120,7 @@ const Wallets = () => {
             type: "line",
           },
           {
-            label: "New WALLETS",
+            label: "New",
             data: res.map((data) => data.NEW_WALLETS),
             backgroundColor: colors.chartPalette[200],
             borderColor: colors.chartPalette[200],
@@ -136,9 +129,10 @@ const Wallets = () => {
           },
         ],
       });
-      setStatusTotalNumberOfActiveWalletsPerWeek("loaded");
+
+      setStatusActiveNewWallet("loaded");
     } catch (error) {
-      setStatusTotalNumberOfActiveWalletsPerWeek("error");
+      setStatusActiveNewWallet("error");
     }
   };
 
@@ -165,26 +159,56 @@ const Wallets = () => {
     }
   };
 
-  const getRichList = () => {
-    let list = [];
-    RichList.map((data) => {
-      list = [
-        ...list,
-        [data.label, data.totalStake, data.addressBalance, data.totalBalance],
-      ];
-    });
-
-    setList(list);
-  };
-
   return (
     <Box sx={{ padding: "20px" }}>
       <Header
         title="Wallets"
-        subtitle="Shows charst of Wallets' activities in Terradash"
+        subtitle="This section includes data about the number and activity of wallets on the Terra network. It can give an indication of the adoption and usage of the network.
+        "
       />
-      <Grid container>
-        <Grid item xs={12} lg={8}>
+      <Grid container gap={2}>
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="# of Unique wallets"
+            source={apis.getWalletQuickData}
+            info={
+              walletQuickData
+                ? walletQuickData.WALLETS.toLocaleString("en-US")
+                : null
+            }
+            status={statusWalletQuickData}
+            getData={getQuickData}
+          />
+        </Grid>
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="average # of active wallets weekly"
+            source={apis.getWalletAvgQuickData}
+            info={
+              walletQuickData
+                ? walletQuickData.AVERAGE_ACTIVE_WALLETS.toLocaleString("en-US")
+                : null
+            }
+            status={statusWalletQuickData}
+            getData={getQuickData}
+          />
+        </Grid>
+
+        <Grid item xs={12} lg={3.8}>
+          <InfoCard
+            title="average # of tx per wallet"
+            source={apis.getWalletQuickData}
+            info={
+              walletQuickData
+                ? walletQuickData.AVERAGE_TX_PER_WALLET.toLocaleString("en-US")
+                : null
+            }
+            status={statusWalletQuickData}
+            getData={getQuickData}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
           <Grid
             container
             gap={2}
@@ -192,104 +216,36 @@ const Wallets = () => {
               justifyContent: "start",
             }}
           >
-            <Grid container gap={2}>
-              <MyChart
-                title="Number Of active/new wallets weekly"
-                Chart={TotalNumberOfActiveWalletsPerWeek}
-                url={apis.queryTotalNumberOfActiveWalletsPerWeek}
-                status={statusTotalNumberOfActiveWalletsPerWeek}
-                getData={getTotalNumberOfActiveWalletsPerWeek}
-                data={dataTotalNumberOfActiveWalletsPerWeek}
-                defaultSize={100}
-                id="TotalNumberOfActiveWalletsPerWeek"
-              />
+            <MyChart
+              title="# Of Active/new Wallets weekly"
+              Chart={ActiveNewWallet}
+              url={apis.queryActiveNewWallet}
+              status={statusActiveNewWallet}
+              getData={getActiveNewWallet}
+              data={dataActiveNewWallet}
+              id={"ActiveNewWallet"}
+            />
+            <MyChart
+              title="Cumulative # Of Wallets over time"
+              Chart={CumulativeNumberOfWalletsOverTime}
+              url={apis.queryCumulativeNumberOfWalletsOverTime}
+              status={statusCumulativeNumberOfWalletsOverTime}
+              getData={getCumulativeNumberOfWalletsOverTime}
+              data={dataCumulativeNumberOfWalletsOverTime}
+              id={"CumulativeNumberOfWalletsOverTime"}
+            />
 
-              <MyChart
-                title="Cumulative Number Of Wallets Over Time"
-                Chart={CumulativeNumberOfWalletsOverTime}
-                url={apis.queryCumulativeNumberOfWalletsOverTime}
-                status={statusCumulativeNumberOfWalletsOverTime}
-                getData={getCumulativeNumberOfWalletsOverTime}
-                data={dataCumulativeNumberOfWalletsOverTime}
-                defaultSize={100}
-                id="CumulativeNumberOfWalletsOverTime"
-              />
-            </Grid>
+            <MyChart
+              title="distribution by tx count"
+              Chart={DistributionOfWallets}
+              url={apis.queryDistributionOfWallets}
+              status={statusDistributionOfWallets}
+              getData={getDistributionOfWallets}
+              data={dataDistributionOfWallets}
+              id={"DistributionOfWallets"}
+              defaultSize={100}
+            />
           </Grid>
-        </Grid>
-        <Grid item xs={12} lg={3.8}>
-          <InfoCard
-            title="# of unique wallets"
-            source={apis.getNumberofWallets}
-            info={
-              numberOfWallets ? numberOfWallets.toLocaleString("en-US") : null
-            }
-            status={statusNumberOfWallets}
-            getData={getNumberOfWallets}
-          />
-
-          <InfoCard
-            title="Average # of active wallets weekly"
-            source={apis.getActiveNewWallets}
-            info={
-              activeNewWallet
-                ? activeNewWallet.AVERAGE_ACTIVE_WALLETS.toLocaleString("en-US")
-                : null
-            }
-            status={statusActiveNewWallet}
-            getData={getActiveNewWallet}
-          />
-
-          <InfoCard
-            title="Average # of new wallets weekly"
-            source={apis.getActiveNewWallets}
-            info={
-              activeNewWallet
-                ? activeNewWallet.AVERAGE_NEW_WALLETS.toLocaleString("en-US")
-                : null
-            }
-            status={statusActiveNewWallet}
-            getData={getActiveNewWallet}
-          />
-
-          <InfoCard
-            title="Average # of tx per wallet"
-            source={apis.getAverageTxPerWallet}
-            info={
-              averageTxPerWallet
-                ? averageTxPerWallet.toLocaleString("en-US")
-                : null
-            }
-            status={statusAverageTxPerWallet}
-            getData={getAverageTxPerWallet}
-          />
-        </Grid>
-      </Grid>
-
-      <Grid
-        container
-        sx={{
-          marginTop: "28px",
-        }}
-      >
-        <Header
-          title="Terra(LUNA) rich list"
-          subtitle="This section ranks users of the Terra network by the amount of LUNA they hold.
-           It can be used to identify the top holders of
-            LUNA and understand the distribution of wealth within the network."
-        />
-        <Grid xs={12}>
-          <MyTable
-            data={list}
-            columns={["label", "totalStake", "addressBalance", "totalBalance"]}
-            title="Rich List"
-            defaultSize={100}
-            pagination
-            download
-            sort
-            search
-            viewColumns
-          />
         </Grid>
       </Grid>
     </Box>
