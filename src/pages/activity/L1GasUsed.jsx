@@ -1,6 +1,6 @@
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import LineChart from "../../components/LineChart";
+import BarChart from "../../components/BarChart";
 
 const L1GasUsed = ({ data, chartWidth, id }) => {
   const theme = useTheme();
@@ -34,9 +34,7 @@ const L1GasUsed = ({ data, chartWidth, id }) => {
           text: "Volume (LUNA)",
         },
       },
-      avgAxis: {
-        position: "right",
-      },
+
       x: {
         stacked: true,
         grid: {
@@ -49,16 +47,24 @@ const L1GasUsed = ({ data, chartWidth, id }) => {
           color: colors.secondary[400],
         },
       },
+      avgAxis: {
+        position: "right",
+      },
     },
     interaction: {
       mode: "nearest",
       axis: "x",
       intersect: false,
     },
+    elements: {
+      point: {
+        radius: chartWidth < 11 ? 0 : 3,
+      },
+    },
   };
 
   return (
-    <LineChart
+    <BarChart
       chartData={data}
       options={options}
       chartWidth={chartWidth}

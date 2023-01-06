@@ -1,6 +1,6 @@
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import LineChart from "../../components/LineChart";
+import BarChart from "../../components/BarChart";
 
 const BlockSize = ({ data, chartWidth, id }) => {
   const theme = useTheme();
@@ -50,6 +50,11 @@ const BlockSize = ({ data, chartWidth, id }) => {
         },
       },
     },
+    elements: {
+      point: {
+        radius: chartWidth < 11 ? 0 : 3,
+      },
+    },
     interaction: {
       mode: "nearest",
       axis: "x",
@@ -58,7 +63,7 @@ const BlockSize = ({ data, chartWidth, id }) => {
   };
 
   return (
-    <LineChart
+    <BarChart
       chartData={data}
       options={options}
       chartWidth={chartWidth}

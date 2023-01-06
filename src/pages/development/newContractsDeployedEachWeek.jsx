@@ -1,6 +1,7 @@
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import LineChart from "../../components/LineChart";
+import BarChart from "../../components/BarChart";
 
 const NewContractsDeployedEachWeek = ({ data, id, chartWidth }) => {
   const theme = useTheme();
@@ -43,6 +44,11 @@ const NewContractsDeployedEachWeek = ({ data, id, chartWidth }) => {
         },
       },
     },
+    elements: {
+      point: {
+        radius: chartWidth < 11 ? 0 : 3,
+      },
+    },
     interaction: {
       mode: "nearest",
       axis: "x",
@@ -51,7 +57,7 @@ const NewContractsDeployedEachWeek = ({ data, id, chartWidth }) => {
   };
 
   return (
-    <LineChart
+    <BarChart
       chartData={data}
       options={options}
       id={id}

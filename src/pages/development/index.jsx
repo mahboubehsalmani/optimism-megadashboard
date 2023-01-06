@@ -100,19 +100,18 @@ const Development = () => {
     <Box sx={{ padding: "20px" }}>
       <Header
         title="Developments"
-        subtitle="The Development page includes data about contracts and development activity within the Terra community.
-         It can give an indication of the community's progress and adoption of smart contracts on the network.
-        "
+        subtitle="The Development page includes data about contracts and development activity within the Optimism community.
+         It can give an indication of the community's progress and adoption of smart contracts on the network."
       />
 
       <Grid container gap={2}>
         <Header
           title="Contracts"
-          subtitle="This section includes data about the contracts on the Terra network. 
-          It can give an indication of the activity and popularity of smart contracts on the network."
+          subtitle="This section includes data about the contracts on the Optimism network.
+         It can give an indication of the activity and popularity of smart contracts on the network."
         />
         <MyChart
-          title="# of new contracts weekly"
+          title="# of new/active contracts weekly"
           Chart={NewContractsDeployedEachWeek}
           url={apis.queryNewContractsDeployedEachWeek}
           status={loading}
