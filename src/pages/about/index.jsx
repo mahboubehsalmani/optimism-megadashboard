@@ -13,7 +13,46 @@ const About = () => {
     >
       <Header
         title="About"
-        subtitle="Welcome to the Optimism Network Analytical Dashboard, created by @Mahdi and @Mahboubeh for the @MetricsDAO community. Our goal is to provide a comprehensive and user-friendly resource for tracking key metrics and data points related to the Optimism network.        "
+        subtitle={
+          <Box>
+            Welcome to the Optimism Network Analytical Dashboard, created by{" "}
+            <a
+              href="https://discord.com/users/575742893722173442"
+              target="_blank"
+              style={{
+                textDecoration: "none",
+                color: colors.chartPalette[100],
+              }}
+            >
+              Mahdi
+            </a>{" "}
+            and{" "}
+            <a
+              href="https://discord.com/users/685392041722904589"
+              target="_blank"
+              style={{
+                textDecoration: "none",
+                color: colors.chartPalette[100],
+              }}
+            >
+              Mahboubeh
+            </a>{" "}
+            for the{" "}
+            <a
+              href="https://metricsdao.notion.site/"
+              target="_blank"
+              style={{
+                textDecoration: "none",
+                color: colors.chartPalette[100],
+              }}
+            >
+              MetricsDao
+            </a>{" "}
+            community. Our goal is to provide a comprehensive and user-friendly
+            resource for tracking key metrics and data points related to the
+            Optimism network.
+          </Box>
+        }
       />
       <Header
         title="Tools"

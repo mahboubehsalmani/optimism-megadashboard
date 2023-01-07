@@ -349,7 +349,6 @@ const Activity = () => {
           },
         ],
       });
-      console.log("getTXWeekly");
       setStatusTxWeekly("loaded");
     } catch (error) {
       setStatusTxWeekly("error");
@@ -373,7 +372,6 @@ const Activity = () => {
           },
         ],
       });
-      console.log("getTPSWeekly");
       setStatusTPSWeekly("loaded");
     } catch (error) {
       setStatusTPSWeekly("error");
@@ -407,7 +405,6 @@ const Activity = () => {
         ],
       });
       setStatusSenderReceiver("loaded");
-      console.log("getSender");
     } catch (error) {
       setStatusSenderReceiver("error");
     }
@@ -441,7 +438,6 @@ const Activity = () => {
         ],
       });
       setStatusL1GasUsed("loaded");
-      console.log("getL1");
     } catch (error) {
       setStatusL1GasUsed("error");
     }
@@ -466,7 +462,6 @@ const Activity = () => {
       });
       setDataFunctionDistribution(temp);
       setStatusFunctionDistribution("loaded");
-      console.log("getFunDist");
     } catch (error) {
       setStatusFunctionDistribution("error");
     }
@@ -558,7 +553,6 @@ const Activity = () => {
           },
         ],
       });
-      console.log("getMostusedfunc");
 
       setStatusMostUsedFunctionWeekly("loaded");
     } catch (error) {
@@ -585,7 +579,6 @@ const Activity = () => {
       });
       setDataMostUsedProtocolActions(temp);
       setStatusMostUsedProtocolActions("loaded");
-      console.log("getmostused protocol");
     } catch (error) {
       setStatusMostUsedProtocolActions("error");
     }
@@ -677,7 +670,6 @@ const Activity = () => {
           },
         ],
       });
-      console.log("get mose used proto action weekly");
 
       setStatusMostUsedProtocolActionsWeekly("loaded");
     } catch (error) {
