@@ -12,6 +12,7 @@ import Governance from "./pages/governance/index";
 import DeFi from "./pages/defi/index";
 import Fees from "./pages/Fees/index";
 import Blocks from "./pages/blocks/index";
+import NFT from "./pages/nft/index";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -35,6 +36,7 @@ function App() {
               <Route path="/defi" element={<DeFi />} />
               <Route path="/fees" element={<Fees />} />
               <Route path="/blocks" element={<Blocks />} />
+              <Route path="/nft" element={<NFT />} />
             </Routes>
           </main>
         </div>

@@ -245,7 +245,61 @@ const getDEXWeekly =
 const queryDEXWeekly =
   "https://app.flipsidecrypto.com/velocity/queries/2bf3588b-1341-46ab-b469-27f49265e817";
 
+// NFT
+
+const getNFTSalesQuickData =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/ca8e0e3b-4383-4b57-9e23-7f10a42f316f/data/latest";
+const getNFTPlatformsQuickData =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/0b0ed502-d279-4790-89d1-762b401c3a6d/data/latest";
+const queryPlatformQuickData =
+  "https://app.flipsidecrypto.com/velocity/queries/0b0ed502-d279-4790-89d1-762b401c3a6d";
+
+const getNFTCurrencyQuickData =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/643e15fd-15da-45d8-93d6-8303dd1c2416/data/latest";
+const queryCurrencyQuickData =
+  "https://app.flipsidecrypto.com/velocity/queries/643e15fd-15da-45d8-93d6-8303dd1c2416";
+
+const getNFTSalesWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/56e705fa-4c7e-40d7-bc0e-bc174a0ae6ae/data/latest";
+const queryNFTSalesWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/56e705fa-4c7e-40d7-bc0e-bc174a0ae6ae";
+
+const getNFTPlatformsWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/43519946-c494-4bd2-a2e2-78e512953fa0/data/latest";
+const queryNFTPlatformsWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/43519946-c494-4bd2-a2e2-78e512953fa0";
+
+const getNFTCurrencyWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/12dad865-104f-4c27-8a98-4eb815f4bc82/data/latest";
+const queryNFTCurrencyWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/12dad865-104f-4c27-8a98-4eb815f4bc82";
+
+const getNFTTopByVolume =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/0c6164f8-a566-4679-89f9-4ef31670a556/data/latest";
+const queryNFTTopByVolume =
+  "https://app.flipsidecrypto.com/velocity/queries/0c6164f8-a566-4679-89f9-4ef31670a556";
+const getNFTTopByCount =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/6e4827d4-6f57-48f8-b795-e7ddc24a9bf7/data/latest";
+const queryNFTTopByCount =
+  "https://app.flipsidecrypto.com/velocity/queries/6e4827d4-6f57-48f8-b795-e7ddc24a9bf7";
+
 export default {
+  getNFTTopByVolume,
+  queryNFTTopByVolume,
+  getNFTTopByCount,
+  queryNFTTopByCount,
+  getNFTCurrencyWeekly,
+  queryNFTCurrencyWeekly,
+  getNFTCurrencyQuickData,
+  queryCurrencyQuickData,
+  getNFTPlatformsWeekly,
+  queryNFTPlatformsWeekly,
+  getNFTSalesQuickData,
+  queryPlatformQuickData,
+  getNFTCurrencyQuickData,
+  getNFTPlatformsQuickData,
+  getNFTSalesWeekly,
+  queryNFTSalesWeekly,
   getAverageTransactionFeePerTransactionPerWeek,
   getTotalTransactionFeesPerWeek,
   getTotalNumberOfTransactionsPerWeek,
