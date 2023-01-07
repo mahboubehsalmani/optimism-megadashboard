@@ -1,13 +1,10 @@
 import { useTheme } from "@emotion/react";
 import { Box, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import BarChart from "../../components/BarChart";
-import InfoCard from "../../components/InfoCard";
 import apis from "../../services/apis";
 import http from "../../services/http";
 import { tokens } from "../../theme";
-import TerraPastSevenDaysHourlyPrice from "./terraPastSevenDaysHourlyPrice";
-import MyChart from "../../components/MyChart";
+import OptimismPastSevenDaysHourlyPrice from "./optimismPastSevenDaysHourlyPrice";
 import AboutTerra from "./aboutOptimism";
 import CurrentPrice from "./currentPrice";
 import QuickAccess from "./quickAccess";
@@ -212,7 +209,7 @@ const Home = () => {
             status={statusCurrentPrice}
             getData={getCurrentPrice}
           />
-          <TerraPastSevenDaysHourlyPrice data={dataHourlyPrice} />
+          <OptimismPastSevenDaysHourlyPrice data={dataHourlyPrice} />
           <PastDayData
             data={{
               dataAverageTPS,

@@ -21,7 +21,9 @@ const QuickAccess = () => {
   return (
     <Grid container gap={2}>
       <Grid
-        xs={2.8}
+        lg={2.8}
+        md={5.8}
+        xs={12}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
@@ -56,7 +58,9 @@ const QuickAccess = () => {
         />
       </Grid>
       <Grid
-        xs={2.8}
+        lg={2.8}
+        md={5.8}
+        xs={12}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
@@ -91,7 +95,9 @@ const QuickAccess = () => {
         />
       </Grid>
       <Grid
-        xs={2.8}
+        lg={2.8}
+        md={5.8}
+        xs={12}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
@@ -126,7 +132,9 @@ const QuickAccess = () => {
         />
       </Grid>
       <Grid
-        xs={2.8}
+        lg={2.8}
+        md={5.8}
+        xs={12}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
@@ -162,7 +170,9 @@ const QuickAccess = () => {
       </Grid>
 
       <Grid
-        xs={2.8}
+        lg={2.8}
+        md={5.8}
+        xs={12}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
@@ -198,7 +208,9 @@ const QuickAccess = () => {
       </Grid>
 
       <Grid
-        xs={2.8}
+        lg={2.8}
+        md={5.8}
+        xs={12}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
@@ -234,7 +246,9 @@ const QuickAccess = () => {
       </Grid>
 
       <Grid
-        xs={2.8}
+        lg={2.8}
+        md={5.8}
+        xs={12}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
@@ -270,7 +284,9 @@ const QuickAccess = () => {
       </Grid>
 
       <Grid
-        xs={2.8}
+        lg={2.8}
+        md={5.8}
+        xs={12}
         item
         sx={{
           border: `1px solid ${colors.backgroundColor[400]}`,
