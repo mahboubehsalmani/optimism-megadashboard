@@ -94,7 +94,7 @@ const Activity = () => {
         labels: res.map((data) => data.WEEK),
         datasets: [
           {
-            label: "Total use",
+            label: "Total",
             data: res.map((data) => data.TOTAL),
             backgroundColor: colors.chartPalette[100],
             borderColor: colors.chartPalette[100],
@@ -102,7 +102,7 @@ const Activity = () => {
             type: "line",
           },
           {
-            label: "Average use",
+            label: "Average",
             yAxisID: "avgAxis",
             data: res.map((data) => data.AVERAGE),
             backgroundColor: colors.chartPalette[200],
@@ -115,7 +115,7 @@ const Activity = () => {
         labels: res.map((data) => data.WEEK),
         datasets: [
           {
-            label: "Average fee",
+            label: "Max",
             data: res.map((data) => data.MAX),
             backgroundColor: colors.chartPalette[100],
             borderColor: colors.chartPalette[100],
@@ -123,7 +123,7 @@ const Activity = () => {
             type: "line",
           },
           {
-            label: "Average fee",
+            label: "Median",
             yAxisID: "medianAxis",
             data: res.map((data) => data.MEDIAN),
             backgroundColor: colors.chartPalette[200],
@@ -147,7 +147,7 @@ const Activity = () => {
         labels: res.map((data) => data.WEEK),
         datasets: [
           {
-            label: "Average use",
+            label: "Total",
             data: res.map((data) => data.TOTAL),
             backgroundColor: colors.chartPalette[100],
             borderColor: colors.chartPalette[100],
@@ -155,7 +155,7 @@ const Activity = () => {
             type: "line",
           },
           {
-            label: "Average use",
+            label: "Average",
             yAxisID: "avgAxis",
             data: res.map((data) => data.AVERAGE),
             backgroundColor: colors.chartPalette[200],
@@ -170,7 +170,7 @@ const Activity = () => {
         labels: res.map((data) => data.WEEK),
         datasets: [
           {
-            label: "Max use",
+            label: "Max",
             data: res.map((data) => data.MAX),
             backgroundColor: colors.chartPalette[100],
             borderColor: colors.chartPalette[100],
@@ -178,7 +178,7 @@ const Activity = () => {
             type: "line",
           },
           {
-            label: "Average fee",
+            label: "Median",
             yAxisID: "medianAxis",
             data: res.map((data) => data.MEDIAN),
             backgroundColor: colors.chartPalette[200],
@@ -220,14 +220,13 @@ const Activity = () => {
         <Grid item xs={12}>
           <Header
             title="Transaction Fee"
-            subtitle="This metric counts the total number of transactions that have taken place on the
-             Optimism network over a given time period. These transactions are processed off-chain and
-              then recorded on the Ethereum blockchain."
+            subtitle="This subsection presents data on transaction fees for the Optimism network,
+             including average fee paid per transaction and total fees collected."
           />
         </Grid>
         <Grid item xs={12} lg={3.8}>
           <InfoCard
-            title="Average tx fee"
+            title="Average tx fee(ETH)"
             source={apis.getTxFeeQuickData}
             info={txFeeQuickData ? txFeeQuickData.AVERAGE.toFixed(5) : null}
             status={statusTxFeeQuickData}
@@ -236,7 +235,7 @@ const Activity = () => {
         </Grid>
         <Grid item xs={12} lg={3.8}>
           <InfoCard
-            title="Total tx fee"
+            title="Total tx fee(ETH)"
             source={apis.getTxFeeQuickData}
             info={
               txFeeQuickData
@@ -250,7 +249,7 @@ const Activity = () => {
 
         <Grid item xs={12} lg={3.8}>
           <InfoCard
-            title="Highest tx fee"
+            title="Highest tx fee(ETH)"
             source={apis.getTxFeeQuickData}
             info={
               txFeeQuickData ? txFeeQuickData.MAX.toLocaleString("en-US") : null

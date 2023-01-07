@@ -18,7 +18,7 @@ function LineChart({ chartData, options, chartWidth, id, noPoint }) {
         elements: {
           ...options.elements,
           point: {
-            radius: chartWidth < 11 || noPoint ? 0 : 3,
+            radius: chartWidth < 11 || noPoint ? 1 : 3,
           },
         },
       }}

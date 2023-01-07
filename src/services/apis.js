@@ -5,18 +5,18 @@ const queryHourlyPrice =
   "https://app.flipsidecrypto.com/velocity/queries/68d1f46d-79b0-4b84-9dda-2ce2778c8ffb";
 
 const getNewWalletsPastDay =
-  "https://api.flipsidecrypto.com/api/v2/queries/5cbab18a-d484-4799-bb34-d2171a652e51/data/latest";
+  "https://node-api.flipsidecrypto.com/api/v2/queries/c8e057f0-eca7-40e7-ba2d-033b679291bb/data/latest";
 const queryNewWalletsPastDay =
   "https://app.flipsidecrypto.com/velocity/queries/5cbab18a-d484-4799-bb34-d2171a652e51";
 
 const getNumberOfTransactionsPastDay =
-  "https://api.flipsidecrypto.com/api/v2/queries/4d0ef746-ded0-448f-a2c3-360860e40ba7/data/latest";
+  "https://node-api.flipsidecrypto.com/api/v2/queries/d3f15f4e-8fa1-4c08-9f1b-2c9a5a6c851e/data/latest";
 
 const queryNumberOfTransactionsPastDay =
   "https://app.flipsidecrypto.com/velocity/queries/4d0ef746-ded0-448f-a2c3-360860e40ba7";
 
 const getAverageTPSForPastDay =
-  "https://api.flipsidecrypto.com/api/v2/queries/53b9ac4e-f1d4-4f6b-a4f6-441b1d7e0094/data/latest";
+  "https://node-api.flipsidecrypto.com/api/v2/queries/79ec55c7-1f01-4856-8867-9b3043844620/data/latest";
 
 const queryAverageTPSForPastDay =
   "https://app.flipsidecrypto.com/velocity/queries/53b9ac4e-f1d4-4f6b-a4f6-441b1d7e0094";
@@ -25,7 +25,7 @@ const getCurrentPrice =
   "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=optimism";
 
 const getActiveUserForPastDay =
-  "https://api.flipsidecrypto.com/api/v2/queries/c488dc9a-15df-4d7b-9060-f1209e60fda2/data/latest";
+  "https://node-api.flipsidecrypto.com/api/v2/queries/28ac98d5-8d38-4a0c-8c54-99347430dc7d/data/latest";
 
 const getPastDayBlocks =
   "https://node-api.flipsidecrypto.com/api/v2/queries/9d292b99-784c-46d7-aa70-23fd7873bde5/data/latest";

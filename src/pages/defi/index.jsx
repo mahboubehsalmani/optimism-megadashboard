@@ -539,8 +539,7 @@ const DeFi = () => {
         <Grid item xs={12}>
           <Header
             title="DeFi"
-            subtitle="The Staking page includes data about the Terra network's proof-of-stake (PoS) consensus algorithm.
-             It can give an indication of the activity and performance of the PoS system."
+            subtitle="Tracking Defi activity on the Optimism blockchain such as dex activity and pools."
           />
         </Grid>
         <Grid item xs={12} lg={3.8}>
@@ -602,6 +601,7 @@ const DeFi = () => {
           data={dataWeeklyPools}
           getData={getWeeklyPools}
           status={statusWeeklyPools}
+          desc={"Use 100% size for more details"}
         />
       </Grid>
 
@@ -634,6 +634,7 @@ const DeFi = () => {
           data={DEXWeeklySwaps}
           getData={getDEXWeeklyData}
           status={sStatusDEXWeekly}
+          desc={"Use 100% size for more details"}
         />
 
         <MyChart
@@ -650,6 +651,7 @@ const DeFi = () => {
           data={DEXWeeklySwappers}
           getData={getDEXWeeklyData}
           status={sStatusDEXWeekly}
+          desc={"Use 100% size for more details"}
         />
 
         <MyChart
@@ -666,6 +668,7 @@ const DeFi = () => {
           data={DEXWeeklyPools}
           getData={getDEXWeeklyData}
           status={sStatusDEXWeekly}
+          desc={"Use 100% size for more details"}
         />
       </Grid>
     </Box>

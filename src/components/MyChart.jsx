@@ -16,6 +16,7 @@ import {
   RefreshOutlined as RefreshOutlinedIcon,
   WindowOutlined as WindowOutlinedIcon,
   DownloadOutlined as DownloadIcon,
+  InfoOutlined,
 } from "@mui/icons-material";
 import { tokens } from "../theme";
 
@@ -29,6 +30,7 @@ const MyChart = ({
   url,
   defaultSize,
   id,
+  desc,
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -236,7 +238,19 @@ const MyChart = ({
           </IconButton>
         </Box>
       ) : (
-        <Chart data={data} chartWidth={chartWidth} id={id} />
+        <>
+          <Chart data={data} chartWidth={chartWidth} id={id} />
+          {desc && (
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <InfoOutlined
+                sx={{ marginRight: "4px", color: colors.grey[500] }}
+              />
+              <Typography sx={{ color: colors.grey[500], fontSize: "0.8rem" }}>
+                {desc}
+              </Typography>
+            </Box>
+          )}
+        </>
       )}
     </Grid>
   );

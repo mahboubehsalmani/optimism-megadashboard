@@ -38,7 +38,7 @@ const NFT = () => {
         type: "line",
       },
       {
-        label: "Total USD",
+        label: "Volume (USD)",
         data: [],
         backgroundColor: colors.chartPalette[300],
         borderColor: colors.chartPalette[300],
@@ -59,7 +59,7 @@ const NFT = () => {
         type: "line",
       },
       {
-        label: "Creator",
+        label: "Creator fees",
         data: [],
         backgroundColor: colors.chartPalette[200],
         borderColor: colors.chartPalette[200],
@@ -67,7 +67,7 @@ const NFT = () => {
         type: "bar",
       },
       {
-        label: "Platform",
+        label: "Platform fees",
         data: [],
         backgroundColor: colors.chartPalette[300],
         borderColor: colors.chartPalette[300],
@@ -150,7 +150,7 @@ const NFT = () => {
             type: "line",
           },
           {
-            label: "Total USD",
+            label: "Volume (USD)",
             data: res.map((data) => data.TOTAL_USD),
             backgroundColor: colors.chartPalette[300],
             borderColor: colors.chartPalette[300],
@@ -171,7 +171,7 @@ const NFT = () => {
             type: "line",
           },
           {
-            label: "Creator",
+            label: "Creator fees",
             data: res.map((data) => data.TOTAL_CREATOR_FEE_USD),
             backgroundColor: colors.chartPalette[200],
             borderColor: colors.chartPalette[200],
@@ -179,7 +179,7 @@ const NFT = () => {
             type: "bar",
           },
           {
-            label: "Platform",
+            label: "Platform fees",
             data: res.map((data) => data.TOTAL_PLATFORM_FEE_USD),
             backgroundColor: colors.chartPalette[300],
             borderColor: colors.chartPalette[300],
@@ -248,9 +248,9 @@ const NFT = () => {
         labels: res.map((data) => data.WEEK),
         datasets: [
           {
-            label: "Total USD",
+            label: "Volume (USD)",
             yAxisID: "secondAxis",
-            data: res.map((data) => data.TOTAL_USD),
+            data: res.map((data) => data.TOTAL_FEE_USD),
             backgroundColor: colors.chartPalette[100],
             borderColor: colors.chartPalette[100],
             borderWidth: 1,
@@ -335,9 +335,9 @@ const NFT = () => {
         labels: res.map((data) => data.WEEK),
         datasets: [
           {
-            label: "Total USD",
-            yAxisID: "secondAxis",
-            data: res.map((data) => data.TOTAL_USD),
+            label: "Volume (USD)",
+
+            data: res.map((data) => data.TOTAL_FEE_USD),
             backgroundColor: colors.chartPalette[100],
             borderColor: colors.chartPalette[100],
             borderWidth: 1,

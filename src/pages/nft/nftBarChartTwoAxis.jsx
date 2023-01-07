@@ -52,7 +52,7 @@ const NFTBarChartTwoAxis = ({ data, chartWidth }) => {
     },
     elements: {
       point: {
-        radius: chartWidth < 11 ? 0 : 3,
+        radius: chartWidth < 11 ? 1 : 3,
       },
     },
     interaction: {

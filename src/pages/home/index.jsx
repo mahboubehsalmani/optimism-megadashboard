@@ -157,6 +157,7 @@ const Home = () => {
       setStatusBlocks("error");
     }
   };
+
   const getPastDayGasPrice = async () => {
     setStatusGasPrice("loading");
     try {

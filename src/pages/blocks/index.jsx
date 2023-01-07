@@ -175,7 +175,7 @@ const Activity = () => {
         labels: res.map((data) => data.WEEK),
         datasets: [
           {
-            label: "Max",
+            label: "Count",
             data: res.map((data) => data.BLOCKS_COUNT),
             backgroundColor: colors.chartPalette[100],
             borderColor: colors.chartPalette[100],
@@ -220,8 +220,7 @@ const Activity = () => {
         <Grid item xs={12}>
           <Header
             title="Blocks"
-            subtitle="TPS (transactions per second) measures the speed at which transactions are processed on the Optimism network,
-             while block time refers to the average time it takes for a new block to be added to the blockchain."
+            subtitle="A summary of block data on the Optimism blockchain, including # of blocks, block time, and block size."
           />
         </Grid>
         <Grid item xs={12} lg={3.8}>

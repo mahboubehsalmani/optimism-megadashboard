@@ -13,15 +13,15 @@ const About = () => {
     >
       <Header
         title="About"
-        subtitle="Welcome to the Terra Network Analytical Dashboard, created by @Mahdi and @Mahboubeh for the @MetricsDAO community. Our goal is to provide a comprehensive and user-friendly resource for tracking key metrics and data points related to the Terra network.        "
+        subtitle="Welcome to the Optimism Network Analytical Dashboard, created by @Mahdi and @Mahboubeh for the @MetricsDAO community. Our goal is to provide a comprehensive and user-friendly resource for tracking key metrics and data points related to the Optimism network.        "
       />
       <Header
         title="Tools"
         subtitle={
           <Box>
             To build this dashboard, we used a variety of tools and
-            technologies, including React.js, Chart.js, and the official Terra
-            and Cosmos APIs. We also utilized data from{" "}
+            technologies, including React.js, Chart.js, and the official
+            Optimism and Cosmos APIs. We also utilized data from{" "}
             <a
               href="https://flipsidecrypto.xyz/"
               target="_blank"

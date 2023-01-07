@@ -13,7 +13,7 @@ const Governance = () => {
     >
       <Header
         title="Governance"
-        subtitle="The Governance page provides an overview of the activity and progress within the Terra governance system,
+        subtitle="The Governance page provides an overview of the activity and progress within the Optimism governance system,
          which is run by votes from the community. It includes data about the number
           and type of proposals that have been submitted, as well as the results of completed proposals.
            It also includes data about the participation and voting behavior of users. This data can give an
