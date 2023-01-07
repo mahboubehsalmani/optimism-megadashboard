@@ -11,36 +11,23 @@ import {
 } from "@mui/material";
 import {
   Menu as MenuIcon,
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
-  HomeOutlined as HomeOutlinedIcon,
   AccountBalanceWalletOutlined as WalletOutlinedIcon,
   ComputerOutlined as DevelopmentOutlinedIcon,
-  InventoryOutlined as SupplyOutlinedIcon,
-  PaymentsOutlined as TransactionOutlinedIcon,
+  ReceiptLongOutlined as TransactionOutlinedIcon,
+  PaidOutlined as FeeIcon,
+  HomeOutlined as HomeOutlinedIcon,
+  ViewWeekOutlined as BlocksIcon,
+  CurrencyExchangeOutlined as DeFiIcon,
+  AccountBalanceOutlined as SupplyOutlinedIcon,
+  PaletteOutlined as NFTIcon,
   InfoOutlined as AboutIcon,
   Gavel as GovernanceIcon,
-  Savings as StakingIcon,
 } from "@mui/icons-material";
 import { ColorModeContext, tokens } from "../theme";
 import SidebarItem from "./SidebarItem";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
-
-import {
-  CollectionsBookmark,
-  Edit,
-  Feedback,
-  Help,
-  PermMedia,
-  UploadFile,
-  Work,
-} from "@mui/icons-material";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -90,7 +77,7 @@ const Sidebar = () => {
         />
         <SidebarItem
           title={"Fees"}
-          Icon={<TransactionOutlinedIcon />}
+          Icon={<FeeIcon />}
           to="/fees"
           open={open}
           selected={selected}
@@ -99,7 +86,7 @@ const Sidebar = () => {
 
         <SidebarItem
           title={"Blocks"}
-          Icon={<TransactionOutlinedIcon />}
+          Icon={<BlocksIcon />}
           to="/blocks"
           open={open}
           selected={selected}
@@ -126,7 +113,7 @@ const Sidebar = () => {
 
         <SidebarItem
           title={"DeFi"}
-          Icon={<StakingIcon />}
+          Icon={<DeFiIcon />}
           to="/defi"
           open={open}
           selected={selected}
@@ -136,6 +123,15 @@ const Sidebar = () => {
           title={"Supply"}
           Icon={<SupplyOutlinedIcon />}
           to="/supply"
+          open={open}
+          selected={selected}
+          setSelected={setSelected}
+        />
+
+        <SidebarItem
+          title={"NFT"}
+          Icon={<NFTIcon />}
+          to="/nft"
           open={open}
           selected={selected}
           setSelected={setSelected}
