@@ -123,10 +123,64 @@ const Activity = () => {
     useState("loading");
   const [statusMostUsedFunctionWeekly, setStatusMostUsedFunctionWeekly] =
     useState("loading");
-  const [dataMostUsedFunctionWeekly, setDataMostUsedFunctionWeekly] =
-    useState(null);
-  const [dataFunctionDistribution, setDataFunctionDistribution] =
-    useState(null);
+  const [dataMostUsedFunctionWeekly, setDataMostUsedFunctionWeekly] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Approved",
+        data: [],
+        backgroundColor: colors.chartPalette[100],
+        stack: "base",
+      },
+
+      {
+        label: "multicall",
+        data: [],
+        backgroundColor: colors.chartPalette[200],
+        stack: "base",
+      },
+      {
+        label: "openPosition",
+        data: [],
+        backgroundColor: colors.chartPalette[300],
+        stack: "base",
+      },
+
+      {
+        label: "submit",
+        data: [],
+        backgroundColor: colors.chartPalette[400],
+        stack: "base",
+      },
+      {
+        label: "sign_szabo",
+        data: [],
+        backgroundColor: colors.chartPalette[500],
+        stack: "base",
+      },
+
+      {
+        label: "transmit",
+        data: [],
+        backgroundColor: colors.chartPalette[600],
+        stack: "base",
+      },
+
+      {
+        label: "transfer",
+        data: [],
+        backgroundColor: colors.chartPalette[700],
+        stack: "base",
+      },
+      {
+        label: "other",
+        data: [],
+        backgroundColor: colors.chartPalette[800],
+        stack: "base",
+      },
+    ],
+  });
+  const [dataFunctionDistribution, setDataFunctionDistribution] = useState([]);
 
   // Most used actions
   const [statusMostUsedProtocolActions, setStatusMostUsedProtocolActions] =
@@ -138,9 +192,67 @@ const Activity = () => {
   const [
     dataMostUsedProtocolActionsWeekly,
     setDataMostUsedProtocolActionsWeekly,
-  ] = useState(null);
+  ] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "dapp",
+        data: [],
+        backgroundColor: colors.chartPalette[100],
+        stack: "base",
+      },
+      {
+        label: "token",
+        data: [],
+        backgroundColor: colors.chartPalette[200],
+        stack: "base",
+      },
+      {
+        label: "defi",
+        data: [],
+        backgroundColor: colors.chartPalette[300],
+        stack: "base",
+      },
+      {
+        label: "layer2",
+        data: [],
+        backgroundColor: colors.chartPalette[400],
+        stack: "base",
+      },
+      {
+        label: "nft",
+        data: [],
+        backgroundColor: colors.chartPalette[500],
+        stack: "base",
+      },
+      {
+        label: "dex",
+        data: [],
+        backgroundColor: colors.chartPalette[600],
+        stack: "base",
+      },
+      {
+        label: "chadmin",
+        data: [],
+        backgroundColor: colors.chartPalette[700],
+        stack: "base",
+      },
+      {
+        label: "cex",
+        data: [],
+        backgroundColor: colors.chartPalette[800],
+        stack: "base",
+      },
+      {
+        label: "operator",
+        data: [],
+        backgroundColor: colors.chartPalette[900],
+        stack: "base",
+      },
+    ],
+  });
   const [dataMostUsedProtocolActions, setDataMostUsedProtocolActions] =
-    useState(null);
+    useState([]);
 
   //Most Used Projects
 
@@ -237,6 +349,7 @@ const Activity = () => {
           },
         ],
       });
+      console.log("getTXWeekly");
       setStatusTxWeekly("loaded");
     } catch (error) {
       setStatusTxWeekly("error");
@@ -260,6 +373,7 @@ const Activity = () => {
           },
         ],
       });
+      console.log("getTPSWeekly");
       setStatusTPSWeekly("loaded");
     } catch (error) {
       setStatusTPSWeekly("error");
@@ -293,6 +407,7 @@ const Activity = () => {
         ],
       });
       setStatusSenderReceiver("loaded");
+      console.log("getSender");
     } catch (error) {
       setStatusSenderReceiver("error");
     }
@@ -326,6 +441,7 @@ const Activity = () => {
         ],
       });
       setStatusL1GasUsed("loaded");
+      console.log("getL1");
     } catch (error) {
       setStatusL1GasUsed("error");
     }
@@ -350,6 +466,7 @@ const Activity = () => {
       });
       setDataFunctionDistribution(temp);
       setStatusFunctionDistribution("loaded");
+      console.log("getFunDist");
     } catch (error) {
       setStatusFunctionDistribution("error");
     }
@@ -441,6 +558,7 @@ const Activity = () => {
           },
         ],
       });
+      console.log("getMostusedfunc");
 
       setStatusMostUsedFunctionWeekly("loaded");
     } catch (error) {
@@ -467,6 +585,7 @@ const Activity = () => {
       });
       setDataMostUsedProtocolActions(temp);
       setStatusMostUsedProtocolActions("loaded");
+      console.log("getmostused protocol");
     } catch (error) {
       setStatusMostUsedProtocolActions("error");
     }
@@ -558,6 +677,7 @@ const Activity = () => {
           },
         ],
       });
+      console.log("get mose used proto action weekly");
 
       setStatusMostUsedProtocolActionsWeekly("loaded");
     } catch (error) {
@@ -694,9 +814,9 @@ const Activity = () => {
   return (
     <Box sx={{ padding: "20px" }}>
       <Header
-        title="Activity"
-        subtitle="Activity on the Optimism network refers to the various actions and transactions 
-        that take place on the Ethereum blockchain, such as transfers of funds, smart contract executions, etc."
+        title="Transactions"
+        subtitle="Transactions on the Optimism network refers to the various  transactions that 
+        take place on the Optimism blockchain, such as transfers of funds, smart contract executions, etc."
       />
       <Grid
         container
@@ -841,6 +961,7 @@ const Activity = () => {
               getData={getMostUsedFunctionWeekly}
               data={dataMostUsedFunctionWeekly}
               id={"MoastUsedFunctionWeekly"}
+              desc={"Use 100% size for more details"}
             />
           </Grid>
         </Grid>
@@ -868,7 +989,7 @@ const Activity = () => {
             }}
           >
             <MyChart
-              title="Most used protocol actions"
+              title="Most used action types"
               Chart={MostUsedProtocolAction}
               url={apis.queryMostUsedProtocolActions}
               status={statusMostUsedProtocolActions}
@@ -877,13 +998,14 @@ const Activity = () => {
               id={"getMostUsedProtocolActions"}
             />
             <MyChart
-              title="Most used protocol actions weekly"
+              title="Most used action types weekly"
               Chart={MostUsedProtocolActionsWeekly}
               url={apis.queryMostUsedProtocolActionsWeekly}
               status={statusMostUsedProtocolActionsWeekly}
               getData={getMostUsedProtocolActionsWeekly}
               data={dataMostUsedProtocolActionsWeekly}
               id={"MostUsedProtocolActionsWeekly"}
+              desc={"Use 100% size for more details"}
             />
           </Grid>
         </Grid>
@@ -928,6 +1050,7 @@ const Activity = () => {
               getData={getMostUsedProjectsWeekly}
               data={dataMostUsedProjectsWeekly}
               id={"MostUsedProjectsWeekly"}
+              desc={"Use 100% size for more details"}
             />
           </Grid>
         </Grid>
