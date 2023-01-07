@@ -163,7 +163,8 @@ const Wallets = () => {
     <Box sx={{ padding: "20px" }}>
       <Header
         title="Wallets"
-        subtitle="This section includes data about the number and activity of wallets on the Terra network. It can give an indication of the adoption and usage of the network.
+        subtitle="This section includes data about the number and activity of wallets on the Optimism network.
+         It can give an indication of the adoption and usage of the network.
         "
       />
       <Grid container gap={2}>
