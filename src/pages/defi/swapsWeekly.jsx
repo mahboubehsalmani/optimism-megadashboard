@@ -1,12 +1,8 @@
-import { Box, useTheme } from "@mui/material";
-import { useEffect, useState } from "react";
+import BarChart from "../../components/BarChart";
+import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import Header from "../../components/Header";
-import LineChart from "../../components/LineChart";
-import http from "../../services/http";
-import apis from "../../services/apis";
 
-const TotalTransactionFeesPerWeek = ({ data, chartWidth, id }) => {
+const SwapsWeekly = ({ data, chartWidth }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -23,6 +19,7 @@ const TotalTransactionFeesPerWeek = ({ data, chartWidth, id }) => {
     },
     scales: {
       y: {
+        stacked: true,
         tick: {
           color: colors.redAccent[800],
           display: true,
@@ -32,12 +29,13 @@ const TotalTransactionFeesPerWeek = ({ data, chartWidth, id }) => {
           color: colors.grey[600],
         },
         title: {
-          display: true,
+          display: false,
           color: colors.secondary[400],
-          text: "Average",
+          text: "Volume (LUNA)",
         },
       },
       x: {
+        stacked: true,
         grid: {
           display: false,
           color: colors.grey[100],
@@ -48,6 +46,14 @@ const TotalTransactionFeesPerWeek = ({ data, chartWidth, id }) => {
           color: colors.secondary[400],
         },
       },
+      swapsAxis: {
+        position: "right",
+      },
+    },
+    elements: {
+      point: {
+        radius: chartWidth < 11 ? 0 : 3,
+      },
     },
     interaction: {
       mode: "nearest",
@@ -56,14 +62,7 @@ const TotalTransactionFeesPerWeek = ({ data, chartWidth, id }) => {
     },
   };
 
-  return (
-    <LineChart
-      chartData={data}
-      options={options}
-      chartWidth={chartWidth}
-      id={id}
-    />
-  );
+  return <BarChart chartData={data} options={options} />;
 };
 
-export default TotalTransactionFeesPerWeek;
+export default SwapsWeekly;

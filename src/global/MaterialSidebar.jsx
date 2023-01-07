@@ -81,9 +81,26 @@ const Sidebar = () => {
         />
 
         <SidebarItem
-          title={"Activity"}
+          title={"Transactions"}
           Icon={<TransactionOutlinedIcon />}
-          to="/activity"
+          to="/transactions"
+          open={open}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <SidebarItem
+          title={"Fees"}
+          Icon={<TransactionOutlinedIcon />}
+          to="/fees"
+          open={open}
+          selected={selected}
+          setSelected={setSelected}
+        />
+
+        <SidebarItem
+          title={"Blocks"}
+          Icon={<TransactionOutlinedIcon />}
+          to="/blocks"
           open={open}
           selected={selected}
           setSelected={setSelected}
@@ -108,9 +125,9 @@ const Sidebar = () => {
         />
 
         <SidebarItem
-          title={"Staking"}
+          title={"DeFi"}
           Icon={<StakingIcon />}
-          to="/staking"
+          to="/defi"
           open={open}
           selected={selected}
           setSelected={setSelected}

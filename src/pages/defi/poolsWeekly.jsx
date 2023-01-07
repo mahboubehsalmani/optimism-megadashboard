@@ -1,8 +1,8 @@
+import BarChart from "../../components/BarChart";
 import { useTheme } from "@mui/material";
-import PieChart from "../../components/PieChart";
 import { tokens } from "../../theme";
 
-const StakingActionDistributionVolume = ({ data, id }) => {
+const PoolsWeekly = ({ data, chartWidth }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -12,7 +12,6 @@ const StakingActionDistributionVolume = ({ data, id }) => {
     plugins: {
       legend: {
         position: "top",
-        display: false,
       },
       title: {
         display: true,
@@ -20,6 +19,7 @@ const StakingActionDistributionVolume = ({ data, id }) => {
     },
     scales: {
       y: {
+        stacked: true,
         tick: {
           color: colors.redAccent[800],
           display: true,
@@ -29,12 +29,13 @@ const StakingActionDistributionVolume = ({ data, id }) => {
           color: colors.grey[600],
         },
         title: {
-          display: true,
+          display: false,
           color: colors.secondary[400],
           text: "Volume (LUNA)",
         },
       },
       x: {
+        stacked: true,
         grid: {
           display: false,
           color: colors.grey[100],
@@ -45,6 +46,14 @@ const StakingActionDistributionVolume = ({ data, id }) => {
           color: colors.secondary[400],
         },
       },
+      swapsAxis: {
+        position: "right",
+      },
+    },
+    elements: {
+      point: {
+        radius: chartWidth < 11 ? 0 : 3,
+      },
     },
     interaction: {
       mode: "nearest",
@@ -53,6 +62,7 @@ const StakingActionDistributionVolume = ({ data, id }) => {
     },
   };
 
-  return <PieChart data={data} id={id} />;
+  return <BarChart chartData={data} options={options} />;
 };
-export default StakingActionDistributionVolume;
+
+export default PoolsWeekly;

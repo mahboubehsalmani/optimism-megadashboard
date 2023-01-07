@@ -1,8 +1,8 @@
-import BarChart from "../../components/BarChart";
 import { useTheme } from "@mui/material";
+import PieChart from "../../components/PieChart";
 import { tokens } from "../../theme";
 
-const WeeklyStakingCount = ({ data }) => {
+const MostUsedSwapPools = ({ data, id }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -12,6 +12,7 @@ const WeeklyStakingCount = ({ data }) => {
     plugins: {
       legend: {
         position: "top",
+        display: false,
       },
       title: {
         display: true,
@@ -19,7 +20,6 @@ const WeeklyStakingCount = ({ data }) => {
     },
     scales: {
       y: {
-        stacked: true,
         tick: {
           color: colors.redAccent[800],
           display: true,
@@ -35,7 +35,6 @@ const WeeklyStakingCount = ({ data }) => {
         },
       },
       x: {
-        stacked: true,
         grid: {
           display: false,
           color: colors.grey[100],
@@ -54,7 +53,6 @@ const WeeklyStakingCount = ({ data }) => {
     },
   };
 
-  return <BarChart chartData={data} options={options} />;
+  return <PieChart data={data} />;
 };
-
-export default WeeklyStakingCount;
+export default MostUsedSwapPools;

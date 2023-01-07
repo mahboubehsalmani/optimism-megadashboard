@@ -2,7 +2,7 @@ import BarChart from "../../components/BarChart";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
-const WeeklyStakingRewardsDistributed = ({ data }) => {
+const MostUsedSwapPoolsWeekly = ({ data, chartWidth }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -19,6 +19,7 @@ const WeeklyStakingRewardsDistributed = ({ data }) => {
     },
     scales: {
       y: {
+        stacked: true,
         tick: {
           color: colors.redAccent[800],
           display: true,
@@ -28,14 +29,13 @@ const WeeklyStakingRewardsDistributed = ({ data }) => {
           color: colors.grey[600],
         },
         title: {
-          display: true,
+          display: false,
           color: colors.secondary[400],
+          text: "Volume (LUNA)",
         },
       },
-      countAxis: {
-        position: "right",
-      },
       x: {
+        stacked: true,
         grid: {
           display: false,
           color: colors.grey[100],
@@ -45,6 +45,14 @@ const WeeklyStakingRewardsDistributed = ({ data }) => {
           text: "Start date of the week",
           color: colors.secondary[400],
         },
+      },
+      swapsAxis: {
+        position: "right",
+      },
+    },
+    elements: {
+      point: {
+        radius: chartWidth < 11 ? 0 : 3,
       },
     },
     interaction: {
@@ -57,4 +65,4 @@ const WeeklyStakingRewardsDistributed = ({ data }) => {
   return <BarChart chartData={data} options={options} />;
 };
 
-export default WeeklyStakingRewardsDistributed;
+export default MostUsedSwapPoolsWeekly;

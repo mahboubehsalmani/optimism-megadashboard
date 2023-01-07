@@ -216,16 +216,34 @@ const getOPTransferedWeekly =
 const queryOPtransferedWeekly =
   "https://app.flipsidecrypto.com/velocity/queries/2178925b-b197-4cd9-9656-259fc6d2df77";
 
-// staking
+// DeFi
 
-const getStakingActionDistribution =
-  "https://api.flipsidecrypto.com/api/v2/queries/df6d8549-3715-45bd-abec-85fc382ca3dc/data/latest";
-const queryStakingActionDistribution = "";
+const getDeFiQuickData =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/61343baf-7315-49b1-9b0e-35708644a624/data/latest";
 
-const getQuickReward =
-  "https://api.flipsidecrypto.com/api/v2/queries/74cd6033-a63d-4c1a-b647-8819ed4e03ef/data/latest";
+const getDeFiTotalSwapsWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/954f2024-27d5-493b-98fd-84f4826fdd44/data/latest";
+const queryTotalSwapsWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/954f2024-27d5-493b-98fd-84f4826fdd44";
 
-const getTotalLunaStaked = "https://phoenix-lcd.terra.dev/staking/pool";
+const getDeFiMostUsedSwapPools =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/231b761d-10a1-4a6e-bf57-8eecbdb6f956/data/latest";
+const queryDeFiMostUsedSwapPools =
+  "https://app.flipsidecrypto.com/velocity/queries/231b761d-10a1-4a6e-bf57-8eecbdb6f956";
+
+const getDeFiMostUsedSwapPoolsWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/50c29312-cc10-400a-9694-57f17eb3bcf0/data/latest";
+const queryDeFiMostUsedSwapPoolsWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/50c29312-cc10-400a-9694-57f17eb3bcf0";
+
+const getDEXDistribution =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/0c3d628b-4611-4d9e-ae82-c184f6cff312/data/latest";
+const queryDEXDistribution =
+  "https://app.flipsidecrypto.com/velocity/queries/0c3d628b-4611-4d9e-ae82-c184f6cff312";
+const getDEXWeekly =
+  "https://node-api.flipsidecrypto.com/api/v2/queries/2bf3588b-1341-46ab-b469-27f49265e817/data/latest";
+const queryDEXWeekly =
+  "https://app.flipsidecrypto.com/velocity/queries/2bf3588b-1341-46ab-b469-27f49265e817";
 
 export default {
   getAverageTransactionFeePerTransactionPerWeek,
@@ -264,10 +282,6 @@ export default {
   queryActiveContractsWeekly,
   getMoatUsedContracts,
   queryMostUsedContracts,
-  getStakingActionDistribution,
-  queryStakingActionDistribution,
-  getQuickReward,
-  getTotalLunaStaked,
   getPastDayBlocks,
   getPastDayGasPrice,
   getPastDayTotalFee,
@@ -317,4 +331,15 @@ export default {
   getSupplyQuickData,
   getOPTransferedWeekly,
   queryOPtransferedWeekly,
+  getDeFiQuickData,
+  getDeFiTotalSwapsWeekly,
+  queryTotalSwapsWeekly,
+  getDeFiMostUsedSwapPools,
+  queryDeFiMostUsedSwapPools,
+  getDeFiMostUsedSwapPoolsWeekly,
+  queryDeFiMostUsedSwapPoolsWeekly,
+  getDEXDistribution,
+  queryDEXDistribution,
+  getDEXWeekly,
+  queryDEXWeekly,
 };
