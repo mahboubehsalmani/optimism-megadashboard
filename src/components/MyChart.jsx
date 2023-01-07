@@ -239,7 +239,7 @@ const MyChart = ({
         </Box>
       ) : (
         <>
-          <Chart data={data} chartWidth={chartWidth} id={id} />
+          {data && <Chart data={data} chartWidth={chartWidth} id={id} />}
           {desc && (
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <InfoOutlined

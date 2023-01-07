@@ -1029,7 +1029,7 @@ const Activity = () => {
               title="Most used projects"
               Chart={MostUsedProjects}
               url={apis.queryMostUsedProjects}
-              status={statusFunctionDistribution}
+              status={statusMostUsedProjects}
               getData={getMostUsedProjects}
               data={dataMostUsedProjects}
               id={"MostUsedProjects"}
@@ -1038,7 +1038,7 @@ const Activity = () => {
               title="Most used projects weekly"
               Chart={MostUsedProjectsWeekly}
               url={apis.queryMostUsedProjectsWeekly}
-              status={statusMostUsedFunctionWeekly}
+              status={statusMostUsedProjectsWeekly}
               getData={getMostUsedProjectsWeekly}
               data={dataMostUsedProjectsWeekly}
               id={"MostUsedProjectsWeekly"}
